@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.insuranceagency.MainController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Полисы">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Все" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Компоненты">
+              <items>
+                <Menu mnemonicParsing="false" text="Автомобили">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#onAddCarMenuItem" text="Добавить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onChangeCarMenuItem" text="Изменить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAllCarsMenuItem" text="Все" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Лица, допущенные к управлению">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onAddPersonAllowedToDriveMenuItem" text="Добавить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onChangePersonAllowedToDriveMenuItem" text="Изменить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAllPersonsAllowedToDriveMenuItem" text="Все" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Страхователи">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onAddPolicyholderMenuItem" text="Добавить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onChangePolicyholderMenuItem" text="Изменить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAllPolicyholdersMenuItem" text="Все" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Сотрудники">
+                      <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onAddEmployeeMenuItem" text="Добавить" />
+                          <MenuItem mnemonicParsing="false" onAction="#onChangeEmployeeMenuItem" text="Изменить" />
+                          <MenuItem mnemonicParsing="false" onAction="#onAllEmployeesMenuItem" text="Все" />
+                      </items>
+                  </Menu>
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Отчёты">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onFinancialReportMenuItem" text="Финансовый отчёт" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>
