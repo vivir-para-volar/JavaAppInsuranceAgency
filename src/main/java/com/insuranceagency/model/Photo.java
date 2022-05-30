@@ -1,38 +1,85 @@
 package com.insuranceagency.model;
 
-import java.util.Date;
+import org.jetbrains.annotations.NotNull;
+import java.time.LocalDate;
 
 public class Photo {
+    /**
+     * Поле Id
+     */
     private int id;
+
+    /**
+     * Поле Путь
+     */
+    @NotNull
     private String path;
-    private Date uploadDate;
+
+    /**
+     * Поле Дата загрузки
+     */
+    @NotNull
+    private LocalDate uploadDate;
+
+    /**
+     * Поле Id автомобиля
+     */
     private int carId;
 
-    public Photo(int id, String path, Date uploadDate, int carId) {
+    /**
+     * Инициализирует новый экземпляр класса Photo с заданными параметрами
+     * @param id Id
+     * @param path Путь
+     * @param uploadDate Дата загрузки
+     * @param carId Id автомобиля
+     */
+    public Photo(int id, @NotNull String path, @NotNull LocalDate uploadDate, int carId) {
         this.id = id;
         this.path = path;
         this.uploadDate = uploadDate;
         this.carId = carId;
     }
 
-    public Photo(String path, Date uploadDate, int carId) {
+    /**
+     * Инициализирует новый экземпляр класса Photo с заданными параметрами
+     * @param path Путь
+     * @param uploadDate Дата загрузки
+     * @param carId Id автомобиля
+     */
+    public Photo(@NotNull String path, @NotNull LocalDate uploadDate, int carId) {
         this.path = path;
         this.uploadDate = uploadDate;
         this.carId = carId;
     }
 
+    /**
+     * Функция получения значение поля {@link Photo#id}
+     * @return Id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Функция получения значение поля {@link Photo#path}
+     * @return Путь
+     */
     public String getPath() {
         return path;
     }
 
-    public Date getUploadDate() {
+    /**
+     * Функция получения значение поля {@link Photo#uploadDate}
+     * @return Дата загрузки
+     */
+    public LocalDate getUploadDate() {
         return uploadDate;
     }
 
+    /**
+     * Функция получения значение поля {@link Photo#carId}
+     * @return Id автомобиля
+     */
     public int getCarId() {
         return carId;
     }

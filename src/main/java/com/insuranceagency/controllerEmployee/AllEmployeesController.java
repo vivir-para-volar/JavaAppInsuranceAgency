@@ -151,7 +151,7 @@ public class AllEmployeesController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText(exp.getMessage());
+            alert.setContentText("Не удалось загрузить страницу");
             alert.showAndWait();
         }
     }

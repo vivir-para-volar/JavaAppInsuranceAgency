@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DBPersonAllowedToDrive {
+
     /**
      * Получение всего списка лиц, допущенных к управлению
      * @return Список лиц, допущенных к управлению
