@@ -1,13 +1,46 @@
 package com.insuranceagency.model;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Car {
+    /**
+     * Поле Id
+     */
     private int id;
+
+    /**
+     * Поле Модель
+     */
+    @NotNull
     private String model;
+
+    /**
+     * Поле VIN номер
+     */
+    @NotNull
     private String vin;
+
+    /**
+     * Поле Регистрационный знак
+     */
+    @NotNull
     private String registrationPlate;
+
+    /**
+     * Поле Паспорт ТС
+     */
+    @NotNull
     private String vehiclePassport;
 
-    public Car(int id, String model, String vin, String registrationPlate, String vehiclePassport) {
+    /**
+     * Инициализирует новый экземпляр класса Car с заданными параметрами
+     * @param id Id
+     * @param model Модель
+     * @param vin VIN номер
+     * @param registrationPlate Регистрационный знак
+     * @param vehiclePassport Паспорт ТС
+     */
+    public Car(int id, @NotNull String model, @NotNull String vin, @NotNull String registrationPlate, @NotNull String vehiclePassport) {
         this.id = id;
         this.model = model;
         this.vin = vin;
@@ -15,29 +48,56 @@ public class Car {
         this.vehiclePassport = vehiclePassport;
     }
 
-    public Car(String model, String vin, String registrationPlate, String vehiclePassport) {
+    /**
+     * Инициализирует новый экземпляр класса Car с заданными параметрами
+     * @param model Модель
+     * @param vin VIN номер
+     * @param registrationPlate Регистрационный знак
+     * @param vehiclePassport Паспорт ТС
+     */
+    public Car(@NotNull String model, @NotNull String vin, @NotNull String registrationPlate, @NotNull String vehiclePassport) {
         this.model = model;
         this.vin = vin;
         this.registrationPlate = registrationPlate;
         this.vehiclePassport = vehiclePassport;
     }
 
+    /**
+     * Функция получения значение поля {@link Car#id}
+     * @return Id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Функция получения значение поля {@link Car#model}
+     * @return Модель
+     */
     public String getModel() {
         return model;
     }
 
+    /**
+     * Функция получения значение поля {@link Car#vin}
+     * @return VIN номер
+     */
     public String getVin() {
         return vin;
     }
 
+    /**
+     * Функция получения значение поля {@link Car#registrationPlate}
+     * @return Регистрационный знак
+     */
     public String getRegistrationPlate() {
         return registrationPlate;
     }
 
+    /**
+     * Функция получения значение поля {@link Car#vehiclePassport}
+     * @return Паспорт ТС
+     */
     public String getVehiclePassport() {
         return vehiclePassport;
     }

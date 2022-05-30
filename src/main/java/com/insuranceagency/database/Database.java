@@ -1,7 +1,5 @@
 package com.insuranceagency.database;
 
-import com.insuranceagency.model.Employee;
-
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.*;
@@ -9,8 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Database {
     /**
