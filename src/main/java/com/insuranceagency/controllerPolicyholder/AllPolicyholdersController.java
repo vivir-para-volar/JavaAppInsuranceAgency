@@ -112,7 +112,7 @@ public class AllPolicyholdersController {
      * По нажатию на кнопку "Изменить" проверяет выбран ли страхователь и вызывает метод показа сцены изменения
      */
     public void onChangePolicyholder(ActionEvent actionEvent) {
-        if(tablePolicyholders.isFocused()) {
+        if(tablePolicyholders.isFocused() && selectedPolicyholder != null) {
             showDialogChange(selectedPolicyholder);
             fillTable();
         }

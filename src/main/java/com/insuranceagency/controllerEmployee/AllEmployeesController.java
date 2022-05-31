@@ -116,7 +116,7 @@ public class AllEmployeesController {
      * По нажатию на кнопку "Изменить" проверяет выбран ли сотрудник и вызывает метод показа сцены изменения
      */
     public void onChangeEmployee(ActionEvent actionEvent) {
-        if(tableEmployees.isFocused()) {
+        if(tableEmployees.isFocused() && selectedEmployee != null) {
             showDialogChange(selectedEmployee);
             fillTable();
         }

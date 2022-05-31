@@ -1,19 +1,82 @@
 package com.insuranceagency.model;
 
-import java.util.Date;
+import com.insuranceagency.database.DBCar;
+import com.insuranceagency.database.DBEmployee;
+import com.insuranceagency.database.DBPolicyholder;
+import org.jetbrains.annotations.NotNull;
+import java.time.LocalDate;
 
 public class Policy {
+    /**
+     * Поле Id
+     */
     private int id;
+
+    /**
+     * Поле Вид страхования
+     */
+    @NotNull
     private String insuranceType;
+
+    /**
+     * Поле Страховая премия
+     */
     private int insurancePremium;
+    /**
+     * Поле Страховая сумма
+     */
     private int insuranceAmount;
-    private Date dateOfConclusion;
-    private Date expirationDate;
+
+    /**
+     * Поле Дата заключения
+     */
+    @NotNull
+    private LocalDate dateOfConclusion;
+    /**
+     * Поле Дата окончания действия
+     */
+    @NotNull
+    private LocalDate expirationDate;
+
+    /**
+     * Поле Id страхователя
+     */
     private int policyholderId;
+    /**
+     * Поле Id автомобиля
+     */
     private int carId;
+    /**
+     * Поле Id сотрудника
+     */
     private int employeeId;
 
-    public Policy(int id, String insuranceType, int insurancePremium, int insuranceAmount, Date dateOfConclusion, Date expirationDate, int policyholderId, int carId, int employeeId) {
+    /**
+     * Поле Имя страхователя
+     */
+    private String policyholderName;
+    /**
+     * Поле Модель автомобиля
+     */
+    private String carModel;
+    /**
+     * Поле Имя сотрудника
+     */
+    private String employeeName;
+
+    /**
+     * Инициализирует новый экземпляр класса Policy с заданными параметрами
+     * @param id Id
+     * @param insuranceType Вид страхования
+     * @param insurancePremium Страховая премия
+     * @param insuranceAmount Страховая сумма
+     * @param dateOfConclusion Дата заключения
+     * @param expirationDate Дата окончания действия
+     * @param policyholderId Id страхователя
+     * @param carId Id автомобиля
+     * @param `employee`Id Id сотрудника
+     */
+    public Policy(int id, @NotNull String insuranceType, int insurancePremium, int insuranceAmount, @NotNull LocalDate dateOfConclusion, @NotNull LocalDate expirationDate, int policyholderId, int carId, int employeeId) {
         this.id = id;
         this.insuranceType = insuranceType;
         this.insurancePremium = insurancePremium;
@@ -25,7 +88,18 @@ public class Policy {
         this.employeeId = employeeId;
     }
 
-    public Policy(String insuranceType, int insurancePremium, int insuranceAmount, Date dateOfConclusion, Date expirationDate, int policyholderId, int carId, int employeeId) {
+    /**
+     * Инициализирует новый экземпляр класса Policy с заданными параметрами
+     * @param insuranceType Вид страхования
+     * @param insurancePremium Страховая премия
+     * @param insuranceAmount Страховая сумма
+     * @param dateOfConclusion Дата заключения
+     * @param expirationDate Дата окончания действия
+     * @param policyholderId Id страхователя
+     * @param carId Id автомобиля
+     * @param employeeId Id сотрудника
+     */
+    public Policy(@NotNull String insuranceType, int insurancePremium, int insuranceAmount, @NotNull LocalDate dateOfConclusion, @NotNull LocalDate expirationDate, int policyholderId, int carId, int employeeId) {
         this.insuranceType = insuranceType;
         this.insurancePremium = insurancePremium;
         this.insuranceAmount = insuranceAmount;
@@ -36,39 +110,113 @@ public class Policy {
         this.employeeId = employeeId;
     }
 
+    /**
+     * Инициализирует поля {@link Policy#policyholderName}, {@link Policy#carModel}, {@link Policy#employeeName}
+     */
+    public void searchName() throws Exception{
+        Policyholder policyholder = DBPolicyholder.searchPolicyholderID(policyholderId);
+        policyholderName = policyholder.getFullName();
+
+        Car car = DBCar.searchCarID(carId);
+        carModel = car.getModel();
+
+        Employee employee = DBEmployee.searchEmployeeID(employeeId);
+        employeeName = employee.getFullName();
+    }
+
+    /**
+     * Функция получения значение поля {@link Policy#id}
+     * @return Id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Функция получения значение поля {@link Policy#insuranceType}
+     * @return Вид страхования
+     */
     public String getInsuranceType() {
         return insuranceType;
     }
 
+    /**
+     * Функция получения значение поля {@link Policy#insurancePremium}
+     * @return Страховая премия
+     */
     public int getInsurancePremium() {
         return insurancePremium;
     }
 
+    /**
+     * Функция получения значение поля {@link Policy#insuranceAmount}
+     * @return Страховая сумма
+     */
     public int getInsuranceAmount() {
         return insuranceAmount;
     }
 
-    public Date getDateOfConclusion() {
+    /**
+     * Функция получения значение поля {@link Policy#dateOfConclusion}
+     * @return Дата заключения
+     */
+    public LocalDate getDateOfConclusion() {
         return dateOfConclusion;
     }
 
-    public Date getExpirationDate() {
+    /**
+     * Функция получения значение поля {@link Policy#expirationDate}
+     * @return Дата окончания действия
+     */
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
+    /**
+     * Функция получения значение поля {@link Policy#policyholderId}
+     * @return Id страхователя
+     */
     public int getPolicyholderId() {
         return policyholderId;
     }
 
+    /**
+     * Функция получения значение поля {@link Policy#carId}
+     * @return Id автомобиля
+     */
     public int getCarId() {
         return carId;
     }
 
+    /**
+     * Функция получения значение поля {@link Policy#employeeId}
+     * @return Id сотрудника
+     */
     public int getEmployeeId() {
         return employeeId;
+    }
+
+    /**
+     * Функция получения значение поля {@link Policy#policyholderName}
+     * @return Имя страхователя
+     */
+    public String getPolicyholderName() {
+        return policyholderName;
+    }
+
+    /**
+     * Функция получения значение поля {@link Policy#carModel}
+     * @return Модель автомобиля
+     */
+    public String getCarModel() {
+        return carModel;
+    }
+
+    /**
+     * Функция получения значение поля {@link Policy#employeeName}
+     * @return Имя сотрудника
+     */
+    public String getEmployeeName() {
+        return employeeName;
     }
 }

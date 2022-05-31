@@ -26,12 +26,12 @@ public class DBEmployee {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             while (resultSet.next()){
                 int id = resultSet.getInt("id");
                 String fullName = resultSet.getString("fullName");
 
                 String birthdayTemp = resultSet.getString("birthday");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate birthday = LocalDate.parse(birthdayTemp, formatter);
 
                 String telephone = resultSet.getString("telephone");
@@ -233,6 +233,7 @@ public class DBEmployee {
             ResultSet resultSet = statement.executeQuery(query);
 
             int countRow = 0;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             while (resultSet.next()) {
                 countRow++;
 
@@ -240,7 +241,6 @@ public class DBEmployee {
                 String fullName = resultSet.getString("fullName");
 
                 String birthdayTemp = resultSet.getString("birthday");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate birthday = LocalDate.parse(birthdayTemp, formatter);
 
                 String telephone = resultSet.getString("telephone");

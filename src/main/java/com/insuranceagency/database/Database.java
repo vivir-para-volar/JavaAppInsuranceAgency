@@ -1,5 +1,7 @@
 package com.insuranceagency.database;
 
+import com.insuranceagency.model.Employee;
+
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.*;
@@ -7,6 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Database {
     /**
@@ -23,9 +27,9 @@ public class Database {
     final static String PASSWORD = "root";
 
     /**
-     * Логин текущего пользователя
+     * Текущий пользователь
      */
-    private static int userId;
+    private static Employee user;
 
     /**
      * Получение хеша строки
@@ -48,22 +52,33 @@ public class Database {
      * @param password Пароль
      */
     public static void authorization(String login, String password) throws Exception {
-        String query = String.format("SELECT id FROM Employees WHERE Login = '%s' AND Password = '%s'", login, getHash(password));
+        String query = String.format("SELECT * FROM employees WHERE login = '%s' AND password = '%s'", login, getHash(password));
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
-
             ResultSet resultSet = statement.executeQuery(query);
+
             int countRow = 0;
-            while (resultSet.next()) countRow++;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            while (resultSet.next()) {
+                countRow++;
+
+                int id = resultSet.getInt("id");
+                String fullName = resultSet.getString("fullName");
+
+                String birthdayTemp = resultSet.getString("birthday");
+                LocalDate birthday = LocalDate.parse(birthdayTemp, formatter);
+
+                String telephone = resultSet.getString("telephone");
+                String passport = resultSet.getString("passport");
+
+                var employee = new Employee(id, fullName, birthday, telephone, passport, login, password);
+            }
+
             if (countRow == 0) {
                 flag = true;
                 throw new Exception("Неправильно указан логин и/или пароль");
-            }
-
-            while (resultSet.next()){
-                userId = resultSet.getInt("id");
             }
         } catch (Exception exp) {
             if (flag) throw exp;
@@ -72,18 +87,18 @@ public class Database {
     }
 
     /**
-     * Функция получения значение поля {@link Database#userId}
-     * @return Id текущего пользователя
+     * Функция получения значение поля {@link Database#user}
+     * @return Текущей пользователь
      */
-    public static int getUserId() {
-        return userId;
+    public static Employee getUser() {
+        return user;
     }
 
     /**
-     * Функция изменения значение поля {@link Database#userId}
-     * @param userId Id текущего пользователя
+     * Функция изменения значение поля {@link Database#user}
+     * @param user Текущей пользователь
      */
-    public static void setUserLogin(int userId) {
-        Database.userId = userId;
+    public static void setUser(Employee user) {
+        Database.user = user;
     }
 }

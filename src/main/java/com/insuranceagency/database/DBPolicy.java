@@ -1,42 +1,51 @@
 package com.insuranceagency.database;
 
+import com.insuranceagency.model.Policy;
 import com.insuranceagency.model.Policyholder;
+import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import org.jetbrains.annotations.NotNull;
-
-public class DBPolicyholder {
+public class DBPolicy {
 
     /**
-     * Получение всего списка страхователей
-     * @return Список страхователей
+     * Получение всего списка полисов
+     * @return Список полисов
      */
-    public static ArrayList<Policyholder> allPolicyholders() throws Exception {
-        var resultList = new ArrayList<Policyholder>();
+    public static ArrayList<Policy> allPolicies() throws Exception {
+        var resultList = new ArrayList<Policy>();
 
-        String query = "SELECT * FROM policyholders ORDER BY fullName";
+        String query = "SELECT * FROM policy ORDER BY dateOfConclusion DESC";
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             while (resultSet.next()){
                 int id = resultSet.getInt("id");
-                String fullName = resultSet.getString("fullName");
+                String insuranceType = resultSet.getString("insuranceType");
+                int insurancePremium = resultSet.getInt("insurancePremium");
+                int insuranceAmount = resultSet.getInt("insuranceAmount");
 
-                String birthdayTemp = resultSet.getString("birthday");
-                LocalDate birthday = LocalDate.parse(birthdayTemp, formatter);
+                String dateOfConclusionTemp = resultSet.getString("dateOfConclusion");
+                LocalDate dateOfConclusion = LocalDate.parse(dateOfConclusionTemp, formatter);
 
-                String telephone = resultSet.getString("telephone");
-                String passport = resultSet.getString("passport");
+                String expirationDateTemp = resultSet.getString("expirationDate");
+                LocalDate expirationDate = LocalDate.parse(expirationDateTemp, formatter);
 
-                var policyholder = new Policyholder(id, fullName, birthday, telephone, passport);
-                resultList.add(policyholder);
+                int policyholderId = resultSet.getInt("policyholderId");
+                int carId = resultSet.getInt("carId");
+                int employeeId = resultSet.getInt("employeeId");
+
+                var policy = new Policy(id, insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId);
+                resultList.add(policy);
             }
 
             return resultList;
@@ -99,17 +108,17 @@ public class DBPolicyholder {
         if (policyholder == null) throw new Exception("Страхователь не выбран");
 
         String query1 = String.format("SELECT id FROM policyholders WHERE telephone = '%s' AND id <> %d",
-                                      policyholder.getTelephone(),
-                                      policyholder.getId());
+                policyholder.getTelephone(),
+                policyholder.getId());
         String query2 = String.format("SELECT id FROM policyholders WHERE passport = '%s' AND id <> %d",
-                                      policyholder.getPassport(),
-                                      policyholder.getId());
+                policyholder.getPassport(),
+                policyholder.getId());
 
         String query = String.format("UPDATE policyholders SET fullName = '%s', telephone = '%s', passport = '%s' WHERE id = %d",
-                                    policyholder.getFullName(),
-                                    policyholder.getTelephone(),
-                                    policyholder.getPassport(),
-                                    policyholder.getId());
+                policyholder.getFullName(),
+                policyholder.getTelephone(),
+                policyholder.getPassport(),
+                policyholder.getId());
 
         boolean flag = false;
 
@@ -140,61 +149,53 @@ public class DBPolicyholder {
     }
 
     /**
-     * Удаление страхователя из БД
-     * @param id Id страхователя
+     * Поиск списка полисов по Id страхователя
+     * @param policyholderId Id страхователя
+     * @return Список найденных полисов
      */
-    public static void deletePolicyholder(int id) throws Exception {
-        String query1 = String.format("SELECT id FROM policies WHERE policyholderId = %d", id);
+    public static ArrayList<Policy> searchPolicyPolicyholderId(int policyholderId) throws Exception{
+        var resultList = new ArrayList<Policy>();
 
-        String query = String.format("DELETE FROM policyholders WHERE id = %d", id);
-
-        boolean flag = false;
+        String query = String.format("SELECT * FROM policies WHERE policyholderID = '%d' ORDER BY dateOfConclusion DESC", policyholderId);
 
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
 
-            ResultSet resultSet = statement.executeQuery(query1);
-            int countRow = 0;
-            while (resultSet.next()) countRow++;
-            if (countRow != 0) {
-                flag = true;
-                throw new Exception("Вы не можете удалить данного страхователя, так как на него оформлен полис");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String insuranceType = resultSet.getString("insuranceType");
+                int insurancePremium = resultSet.getInt("insurancePremium");
+                int insuranceAmount = resultSet.getInt("insuranceAmount");
+
+                String dateOfConclusionTemp = resultSet.getString("dateOfConclusion");
+                LocalDate dateOfConclusion = LocalDate.parse(dateOfConclusionTemp, formatter);
+
+                String expirationDateTemp = resultSet.getString("expirationDate");
+                LocalDate expirationDate = LocalDate.parse(expirationDateTemp, formatter);
+
+                int carId = resultSet.getInt("carId");
+                int employeeId = resultSet.getInt("employeeId");
+
+                var policy = new Policy(id, insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId);
+                resultList.add(policy);
             }
 
-            statement.executeUpdate(query);
+            return resultList;
+
         } catch (Exception exp) {
-            if (flag) throw exp;
-            else throw new Exception("Ошибка в работе БД");
+            throw new Exception("Ошибка в работе БД");
         }
     }
 
     /**
-     * Поиск страхователя по номеру телефона или паспорту
-     * @param telephoneOrPassport Номер телефона или паспорт
-     * @return Найденный страхователь
+     * Поиск полиса по Id
+     * @param id Id полиса
+     * @return Найденный полис
      */
-    public static Policyholder searchPolicyholderTelephoneOrPassport(@NotNull String telephoneOrPassport) throws Exception{
-        String query = String.format("SELECT * FROM policyholders WHERE telephone = '%s' OR passport = '%s'", telephoneOrPassport, telephoneOrPassport);
-        return searchPolicyholder(query);
-    }
-
-    /**
-     * Поиск страхователя по Id
-     * @param id Id страхователя
-     * @return Найденный страхователь
-     */
-    public static Policyholder searchPolicyholderID(int id) throws Exception {
-        String query = String.format("SELECT * FROM policyholders WHERE id = %d", id);
-        return searchPolicyholder(query);
-    }
-
-    /**
-     * Поиск страхователя по определённому запросу
-     * @param query Запрос
-     * @return Найденный страхователь
-     */
-    private static Policyholder searchPolicyholder(@NotNull String query) throws Exception{
-        if (query == null) throw new Exception("Запрос не выбран");
+    public static Policy searchPolicyID(int id) throws Exception {
+        String query = String.format("SELECT * FROM policies WHERE id = %d", id);
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
@@ -206,22 +207,27 @@ public class DBPolicyholder {
             while (resultSet.next()) {
                 countRow++;
 
-                int id = resultSet.getInt("id");
-                String fullName = resultSet.getString("fullName");
+                String insuranceType = resultSet.getString("insuranceType");
+                int insurancePremium = resultSet.getInt("insurancePremium");
+                int insuranceAmount = resultSet.getInt("insuranceAmount");
 
-                String birthdayTemp = resultSet.getString("birthday");
-                LocalDate birthday = LocalDate.parse(birthdayTemp, formatter);
+                String dateOfConclusionTemp = resultSet.getString("dateOfConclusion");
+                LocalDate dateOfConclusion = LocalDate.parse(dateOfConclusionTemp, formatter);
 
-                String telephone = resultSet.getString("telephone");
-                String passport = resultSet.getString("passport");
+                String expirationDateTemp = resultSet.getString("expirationDate");
+                LocalDate expirationDate = LocalDate.parse(expirationDateTemp, formatter);
 
-                var policyholder = new Policyholder(id, fullName, birthday, telephone, passport);
-                return policyholder;
+                int policyholderId = resultSet.getInt("policyholderId");
+                int carId = resultSet.getInt("carId");
+                int employeeId = resultSet.getInt("employeeId");
+
+                var policy = new Policy(id, insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId);
+                return policy;
             }
 
             if (countRow == 0) {
                 flag = true;
-                throw new Exception("Данный страхователь не существует");
+                throw new Exception("Данный полис не существует");
             }
             return null;
 

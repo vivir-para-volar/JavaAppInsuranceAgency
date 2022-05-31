@@ -100,7 +100,7 @@ public class AllPersonsAllowedToDriveController {
      * По нажатию на кнопку "Изменить" проверяет выбрано ли лицо, допущенное к управлению, и вызывает метод показа сцены изменения
      */
     public void onChangePersonAllowedToDrive(ActionEvent actionEvent) {
-        if(tablePersonsAllowedToDrive.isFocused()) {
+        if(tablePersonsAllowedToDrive.isFocused() && selectedPersonAllowedToDrive != null) {
             showDialogChange(selectedPersonAllowedToDrive);
             fillTable();
         }

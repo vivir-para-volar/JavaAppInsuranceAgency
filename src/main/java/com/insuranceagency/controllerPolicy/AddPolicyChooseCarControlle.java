@@ -1,9 +1,11 @@
-package com.insuranceagency.controllerCar;
+package com.insuranceagency.controllerPolicy;
 
 import com.insuranceagency.Main;
+import com.insuranceagency.controllerCar.ChangeCarController;
 import com.insuranceagency.database.DBCar;
+import com.insuranceagency.database.DBPolicyholder;
 import com.insuranceagency.model.Car;
-
+import com.insuranceagency.model.Policyholder;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -24,7 +26,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class AllCarsController {
+public class AddPolicyChooseCarControlle {
     @FXML
     private TextField tfSearch;
 
@@ -41,6 +43,7 @@ public class AllCarsController {
     @FXML
     private TableColumn<Car, String> vehiclePassportColumn;
 
+    private Policyholder selectedPolicyholder;
     private Car selectedCar;
 
     @FXML
@@ -57,6 +60,22 @@ public class AllCarsController {
                 SimpleStringProperty(param.getValue().getVehiclePassport()));
 
         fillTable();
+    }
+
+    private Stage dialogStage;
+    public void setAddStage(Stage addStage, int id) {
+        this.dialogStage = addStage;
+        //btnCancel.setVisible(true);
+
+        try {
+            selectedPolicyholder = DBPolicyholder.searchPolicyholderID(id);
+        } catch (Exception exp) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(exp.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**
@@ -106,9 +125,9 @@ public class AllCarsController {
     }
 
     /**
-     * По нажатию на кнопку "Изменить" проверяет выбран ли автомобиль и вызывает метод показа сцены изменения
+     * По нажатию на кнопку "Выбрать" проверяет выбран ли автомобиль и вызывает метод показа следующий сцены
      */
-    public void onChangeCar(ActionEvent actionEvent) {
+    public void onChoose(ActionEvent actionEvent) {
         if(tableCars.isFocused() && selectedCar != null) {
             showDialogChange(selectedCar);
             fillTable();
@@ -123,13 +142,13 @@ public class AllCarsController {
     }
 
     /**
-     * Показ сцены изменения автомобиля
-     * @param car Автомобиль для изменения
+     * Показ сцены выбопа информации
+     * @param car Выбранный автомобиль
      */
     private void showDialogChange(Car car) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/car/changeCar.fxml"));
+            loader.setLocation(Main.class.getResource("view/changeCar.fxml"));
             Parent page = loader.load();
             Stage addStage = new Stage();
             addStage.setTitle("Изменение автомобиля");

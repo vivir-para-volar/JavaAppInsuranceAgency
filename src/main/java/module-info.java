@@ -17,4 +17,6 @@ module com.insuranceagency {
     opens com.insuranceagency.controllerReport to javafx.fxml;
     exports com.insuranceagency.controllerCar;
     opens com.insuranceagency.controllerCar to javafx.fxml;
+    exports com.insuranceagency.controllerPolicy;
+    opens com.insuranceagency.controllerPolicy to javafx.fxml;
 }
