@@ -83,11 +83,11 @@ public class AddCarController {
             alert.showAndWait();
 
             clear();
-        } catch (Exception exc) {
+        } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText(exc.getMessage());
+            alert.setContentText(exp.getMessage());
             alert.showAndWait();
         }
     }

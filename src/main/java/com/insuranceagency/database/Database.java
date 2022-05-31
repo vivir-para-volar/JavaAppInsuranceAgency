@@ -73,7 +73,7 @@ public class Database {
                 String telephone = resultSet.getString("telephone");
                 String passport = resultSet.getString("passport");
 
-                var employee = new Employee(id, fullName, birthday, telephone, passport, login, password);
+                user = new Employee(id, fullName, birthday, telephone, passport, login, password);
             }
 
             if (countRow == 0) {

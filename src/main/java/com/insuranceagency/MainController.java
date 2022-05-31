@@ -36,7 +36,7 @@ public class MainController {
         loader("view/policy/addPolicy.fxml");
     }
 
-    public void onPolicy(ActionEvent actionEvent) {
+    public void onChangePolicyMenuItem(ActionEvent actionEvent) {
         loader("view/policy/policy.fxml");
     }
 

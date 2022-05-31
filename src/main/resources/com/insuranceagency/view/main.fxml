@@ -12,7 +12,7 @@
           <Menu mnemonicParsing="false" text="Полисы">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#onAddPolicyMenuItem" text="Добавить" />
-                <MenuItem mnemonicParsing="false" onAction="#onPolicy" text="Полис" />
+                <MenuItem mnemonicParsing="false" onAction="#onChangePolicyMenuItem" text="Изменить" />
                 <MenuItem mnemonicParsing="false" text="Все" />
             </items>
           </Menu>

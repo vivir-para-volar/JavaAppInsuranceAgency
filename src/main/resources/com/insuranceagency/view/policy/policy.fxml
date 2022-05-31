@@ -79,11 +79,6 @@
       </VBox>
         <HBox alignment="CENTER" prefHeight="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-            <Button focusTraversable="false" mnemonicParsing="false" onAction="#onAdd" text="Добавить">
-               <HBox.margin>
-                  <Insets right="50.0" />
-               </HBox.margin>
-            </Button>
                 <Button focusTraversable="false" mnemonicParsing="false" onAction="#onChange" text="Изменить" />
                 <Button mnemonicParsing="false" onAction="#onClear" text="Очистить">
                     <HBox.margin>

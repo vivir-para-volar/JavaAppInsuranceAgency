@@ -53,12 +53,12 @@
                     <children>
                         <Label prefWidth="160.0" text="Страхователь" />
                         <TextField fx:id="tfPolicyholder" editable="false" opacity="0.7" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" text="+">
+                  <Button mnemonicParsing="false" onAction="#onAddPolicyholder" text="+">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" text="Выбрать">
+                  <Button mnemonicParsing="false" onAction="#onChoosePolicyholder" text="Выбрать">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -69,12 +69,12 @@
                     <children>
                         <Label prefWidth="160.0" text="Автомобиль" />
                         <TextField fx:id="tfCar" editable="false" opacity="0.7" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" text="+">
+                  <Button mnemonicParsing="false" onAction="#onAddCar" text="+">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" text="Выбрать">
+                  <Button mnemonicParsing="false" onAction="#onChooseCar" text="Выбрать">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
