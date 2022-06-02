@@ -16,8 +16,11 @@
          <children>
             <Label text="Добавление страхователя" textAlignment="CENTER">
                <font>
-                  <Font size="16.0" />
+                  <Font size="18.0" />
                </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
             </Label>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                <children>
@@ -28,7 +31,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label prefWidth="150.0" text="Дата рождения" />
-                  <DatePicker fx:id="dpBirthday" HBox.hgrow="ALWAYS" />
+                  <DatePicker fx:id="dpBirthday" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">

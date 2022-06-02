@@ -145,13 +145,15 @@ public class DBPersonAllowedToDrive {
      * @return Найденное лицо, допущенное к управлению
      */
     public static PersonAllowedToDrive searchPersonAllowedToDriveDrivingLicence(@NotNull String drivingLicence) throws Exception{
+        if(drivingLicence == null || drivingLicence.isEmpty()) throw new Exception("Водительское удостоверение лица, допущенного к управлению, не выбрано");
+
         String query = String.format("SELECT * FROM personsAllowedToDrive WHERE drivingLicence = '%s'", drivingLicence);
         return searchPersonAllowedToDrive(query);
     }
 
     /**
      * Поиск лица, допущенного к управлению, по Id
-     * @param id Id лица, допущенного к управлению,
+     * @param id Id лица, допущенного к управлению
      * @return Найденное лицо, допущенное к управлению
      */
     public static PersonAllowedToDrive searchPersonAllowedToDriveID(int id) throws Exception {
@@ -165,34 +167,55 @@ public class DBPersonAllowedToDrive {
      * @return Найденное лицо, допущенное к управлению
      */
     private static PersonAllowedToDrive searchPersonAllowedToDrive(@NotNull String query) throws Exception{
-        if (query == null) throw new Exception("Запрос не выбран");
+        if (query == null || query.isEmpty()) throw new Exception("Запрос не выбран");
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            int countRow = 0;
             while (resultSet.next()) {
-                countRow++;
-
                 int id = resultSet.getInt("id");
                 String fullName = resultSet.getString("fullName");
                 String drivingLicence = resultSet.getString("drivingLicence");
 
-                var personAllowedToDrive = new PersonAllowedToDrive(id, fullName, drivingLicence);
-                return personAllowedToDrive;
+                return new PersonAllowedToDrive(id, fullName, drivingLicence);
             }
 
-            if (countRow == 0) {
-                flag = true;
-                throw new Exception("Данный страхователь не существует");
-            }
-            return null;
+            flag = true;
+            throw new Exception("Данный страхователь не существует");
 
         }catch (Exception exp) {
             if (flag) throw exp;
             else throw new Exception("Ошибка в работе БД");
+        }
+    }
+
+    /**
+     * Поиск списка лиц, допущенных к управлению, по Id полиса
+     * @param policyId Id полиса
+     * @return Список лиц, допущенных к управлению
+     */
+    public static ArrayList<PersonAllowedToDrive> searchPersonsAllowedToDrivePolicyId(int policyId) throws Exception {
+        var resultList = new ArrayList<PersonAllowedToDrive>();
+
+        String query = String.format("SELECT * FROM connections WHERE policyId = %d", policyId);
+
+        try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                int personAllowedToDriveId = resultSet.getInt("personAllowedToDriveId");
+
+                var personAllowedToDrive = searchPersonAllowedToDriveID(personAllowedToDriveId);
+                resultList.add(personAllowedToDrive);
+            }
+
+            return resultList;
+
+        } catch (Exception exp) {
+            throw new Exception("Ошибка в работе БД");
         }
     }
 }

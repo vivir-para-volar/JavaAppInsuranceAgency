@@ -11,26 +11,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.insuranceagency.controllerPolicy.AddPolicyChooseCarControlle">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.insuranceagency.controllerPolicy.AllPoliciesController">
     <children>
-        <VBox alignment="TOP_CENTER" prefHeight="120.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox alignment="TOP_CENTER" prefHeight="85.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label text="Добавление полиса" textAlignment="CENTER">
+                <Label text="Список полисов" textAlignment="CENTER">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <Label text="Выберите автомобиль" textAlignment="CENTER">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-                </Label>
                 <HBox alignment="CENTER" prefHeight="70.0">
                     <children>
-                        <Label text="Введите VIN номер">
+                        <Label text="Введите номер телефона или паспорт страхователя">
                             <HBox.margin>
                                 <Insets right="25.0" />
                             </HBox.margin>
@@ -51,13 +43,17 @@
                 </HBox>
             </children>
         </VBox>
-        <TableView fx:id="tableCars" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+        <TableView fx:id="tablePolicies" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0">
             <columns>
                 <TableColumn fx:id="idColumn" prefWidth="75.0" text="Id" visible="false" />
-                <TableColumn fx:id="modelColumn" prefWidth="75.0" text="Модель" />
-                <TableColumn fx:id="vinColumn" prefWidth="75.0" text="VIN номер" />
-                <TableColumn fx:id="registrationPlateColumn" prefWidth="75.0" text="Регистрационный знак" />
-                <TableColumn fx:id="vehiclePassportColumn" prefWidth="75.0" text="Паспорт ТС" />
+                <TableColumn fx:id="insuranceTypeColumn" prefWidth="75.0" text="Вид страхования" />
+                <TableColumn fx:id="insurancePremiumColumn" prefWidth="75.0" text="Страховая премия" />
+                <TableColumn fx:id="insuranceAmountColumn" prefWidth="75.0" text="Страховая сумма" />
+                <TableColumn fx:id="dateOfConclusionColumn" prefWidth="75.0" text="Дата заключения" />
+                <TableColumn fx:id="expirationDateColumn" prefWidth="75.0" text="Дата окончания действия" />
+                <TableColumn fx:id="policyholderColumn" prefWidth="75.0" text="Страхователь" />
+                <TableColumn fx:id="carColumn" prefWidth="75.0" text="Автомобиль" />
+                <TableColumn fx:id="employeeColumn" prefWidth="75.0" text="Сотрудник" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -65,10 +61,15 @@
         </TableView>
         <HBox alignment="CENTER" prefHeight="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <Button focusTraversable="false" mnemonicParsing="false" onAction="#onChoose" text="Выбрать" />
+                <Button focusTraversable="false" mnemonicParsing="false" onAction="#onChangePolicy" text="Изменить" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#onDetailPolicy" text="Подробнее">
+               <HBox.margin>
+                  <Insets left="50.0" right="50.0" />
+               </HBox.margin>
+            </Button>
                 <Button mnemonicParsing="false" onAction="#onClear" text="Исходное состояние">
                     <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets />
                     </HBox.margin>
                 </Button>
             </children>

@@ -27,28 +27,14 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class PolicyController {
+public class AllPoliciesController {
     @FXML
     private TextField tfSearch;
 
     @FXML
-    private TableView<Policyholder> tablePolicyholders;
-    @FXML
-    private TableColumn<Policyholder, Integer> idPolicyholderColumn;
-    @FXML
-    private TableColumn<Policyholder, String> fullNameColumn;
-    @FXML
-    private TableColumn<Policyholder, String> birthdayColumn;
-    @FXML
-    private TableColumn<Policyholder, String> telephoneColumn;
-    @FXML
-    private TableColumn<Policyholder, String> passportColumn;
-
-
-    @FXML
     private TableView<Policy> tablePolicies;
     @FXML
-    private TableColumn<Policy, Integer> idPolicyColumn;
+    private TableColumn<Policy, Integer> idColumn;
     @FXML
     private TableColumn<Policy, String> insuranceTypeColumn;
     @FXML
@@ -60,30 +46,19 @@ public class PolicyController {
     @FXML
     private TableColumn<Policy, String> expirationDateColumn;
     @FXML
+    private TableColumn<Policy, String> policyholderColumn;
+    @FXML
     private TableColumn<Policy, String> carColumn;
     @FXML
     private TableColumn<Policy, String> employeeColumn;
 
-
-    private Policyholder selectedPolicyholder;
     private Policy selectedPolicy;
 
     @FXML
     void initialize() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-        idPolicyholderColumn.setCellValueFactory(param -> new
-                SimpleObjectProperty<>(param.getValue().getId()));
-        fullNameColumn.setCellValueFactory(param -> new
-                SimpleStringProperty(param.getValue().getFullName()));
-        birthdayColumn.setCellValueFactory(param -> new
-                SimpleStringProperty(param.getValue().getBirthday().format(dtf)));
-        telephoneColumn.setCellValueFactory(param -> new
-                SimpleStringProperty(param.getValue().getTelephone()));
-        passportColumn.setCellValueFactory(param -> new
-                SimpleStringProperty(param.getValue().getPassport()));
-
-        idPolicyColumn.setCellValueFactory(param -> new
+        idColumn.setCellValueFactory(param -> new
                 SimpleObjectProperty<>(param.getValue().getId()));
         insuranceTypeColumn.setCellValueFactory(param -> new
                 SimpleStringProperty(param.getValue().getInsuranceType()));
@@ -95,37 +70,24 @@ public class PolicyController {
                 SimpleStringProperty(param.getValue().getDateOfConclusion().format(dtf)));
         expirationDateColumn.setCellValueFactory(param -> new
                 SimpleStringProperty(param.getValue().getExpirationDate().format(dtf)));
+        policyholderColumn.setCellValueFactory(param -> new
+                SimpleStringProperty(param.getValue().getPolicyholderName()));
         carColumn.setCellValueFactory(param -> new
                 SimpleStringProperty(param.getValue().getCarModel()));
         employeeColumn.setCellValueFactory(param -> new
                 SimpleStringProperty(param.getValue().getEmployeeName()));
-    }
 
-    public void setAddStage(int policyholderId) {
-        try {
-            selectedPolicyholder = DBPolicyholder.searchPolicyholderID(policyholderId);
-            fillTables();
-        } catch (Exception exp) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(exp.getMessage());
-            alert.showAndWait();
-        }
+        fillTable();
     }
 
     /**
      * Заполнение таблицы
      */
-    private void fillTables(){
-        tablePolicyholders.getItems().clear();
+    private void fillTable(){
         tablePolicies.getItems().clear();
 
         try{
-            ObservableList<Policyholder> listPolicyholder = FXCollections.observableArrayList(selectedPolicyholder);
-            tablePolicyholders.setItems(listPolicyholder);
-
-            ArrayList<Policy> listPolicies = DBPolicy.searchPolicyPolicyholderId(selectedPolicyholder.getId());
+            ArrayList<Policy> listPolicies = DBPolicy.allPolicies();
             ObservableList<Policy> listPolicy = FXCollections.observableArrayList(listPolicies);
             tablePolicies.setItems(listPolicy);
         } catch (Exception exp) {
@@ -144,13 +106,16 @@ public class PolicyController {
     }
 
     /**
-     * Поиск страхователя в БД по номеру телефона или паспорту и всех его полисов при нажатии на кнопку "Поиск"
+     * Поиск всех полисов в БД по номеру телефона или паспорту страхователя при нажатии на кнопку "Поиск"
      */
     public void onSearch(ActionEvent actionEvent) {
         try {
             String search = tfSearch.getText();
-            selectedPolicyholder = DBPolicyholder.searchPolicyholderTelephoneOrPassport(search);
-            fillTables();
+            Policyholder policyholder = DBPolicyholder.searchPolicyholderTelephoneOrPassport(search);
+
+            ArrayList<Policy> listPolicies = DBPolicy.searchPolicyPolicyholderId(policyholder.getId());
+            ObservableList<Policy> listPolicy = FXCollections.observableArrayList(listPolicies);
+            tablePolicies.setItems(listPolicy);
             tfSearch.clear();
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -164,7 +129,7 @@ public class PolicyController {
     /**
      * По нажатию на кнопку "Изменить" проверяет выбран ли полис и вызывает метод показа сцены изменения
      */
-    public void onChange(ActionEvent actionEvent) {
+    public void onChangePolicy(ActionEvent actionEvent) {
         if(tablePolicies.isFocused() && selectedPolicy != null) {
             showDialogChange(selectedPolicy);
         }
@@ -178,7 +143,7 @@ public class PolicyController {
     }
     /**
      * Показ сцены изменения полиса
-     * @param policy Полис для изменения
+     * @param policy Выбранный полис
      */
     private void showDialogChange(Policy policy) {
         try {
@@ -187,7 +152,7 @@ public class PolicyController {
             Parent page = loader.load();
             MainController.getBorderPane.setCenter(page);
             ChangePolicyController controller = loader.getController();
-            controller.setAddStage(true, policy.getId());
+            controller.setAddStage(false, policy.getId());
         } catch (IOException exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -240,14 +205,9 @@ public class PolicyController {
     }
 
     /**
-     * По нажатию на кнопку "Очистить" очищает форму
+     * По нажатию на кнопку "Исходное состояние" возвращает таблицу в первоночальный вид
      */
     public void onClear(ActionEvent actionEvent) {
-        selectedPolicyholder = null;
-        selectedPolicy = null;
-
-        tablePolicyholders.getItems().clear();
-        tablePolicies.getItems().clear();
-
+        fillTable();
     }
 }

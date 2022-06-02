@@ -64,7 +64,7 @@ public class Photo {
      * Функция получения значение поля {@link Photo#path}
      * @return Путь
      */
-    public String getPath() {
+    public @NotNull String getPath() {
         return path;
     }
 
@@ -72,7 +72,7 @@ public class Photo {
      * Функция получения значение поля {@link Photo#uploadDate}
      * @return Дата загрузки
      */
-    public LocalDate getUploadDate() {
+    public @NotNull LocalDate getUploadDate() {
         return uploadDate;
     }
 

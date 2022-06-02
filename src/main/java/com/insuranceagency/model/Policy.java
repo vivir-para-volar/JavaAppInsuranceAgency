@@ -74,7 +74,7 @@ public class Policy {
      * @param expirationDate Дата окончания действия
      * @param policyholderId Id страхователя
      * @param carId Id автомобиля
-     * @param `employee`Id Id сотрудника
+     * @param employeeId Id сотрудника
      */
     public Policy(int id, @NotNull String insuranceType, int insurancePremium, int insuranceAmount, @NotNull LocalDate dateOfConclusion, @NotNull LocalDate expirationDate, int policyholderId, int carId, int employeeId) {
         this.id = id;
@@ -136,7 +136,7 @@ public class Policy {
      * Функция получения значение поля {@link Policy#insuranceType}
      * @return Вид страхования
      */
-    public String getInsuranceType() {
+    public @NotNull String getInsuranceType() {
         return insuranceType;
     }
 
@@ -160,7 +160,7 @@ public class Policy {
      * Функция получения значение поля {@link Policy#dateOfConclusion}
      * @return Дата заключения
      */
-    public LocalDate getDateOfConclusion() {
+    public @NotNull LocalDate getDateOfConclusion() {
         return dateOfConclusion;
     }
 
@@ -168,7 +168,7 @@ public class Policy {
      * Функция получения значение поля {@link Policy#expirationDate}
      * @return Дата окончания действия
      */
-    public LocalDate getExpirationDate() {
+    public @NotNull LocalDate getExpirationDate() {
         return expirationDate;
     }
 

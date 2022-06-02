@@ -74,7 +74,7 @@ public class Car {
      * Функция получения значение поля {@link Car#model}
      * @return Модель
      */
-    public String getModel() {
+    public @NotNull String getModel() {
         return model;
     }
 
@@ -82,7 +82,7 @@ public class Car {
      * Функция получения значение поля {@link Car#vin}
      * @return VIN номер
      */
-    public String getVin() {
+    public @NotNull String getVin() {
         return vin;
     }
 
@@ -90,7 +90,7 @@ public class Car {
      * Функция получения значение поля {@link Car#registrationPlate}
      * @return Регистрационный знак
      */
-    public String getRegistrationPlate() {
+    public @NotNull String getRegistrationPlate() {
         return registrationPlate;
     }
 
@@ -98,7 +98,7 @@ public class Car {
      * Функция получения значение поля {@link Car#vehiclePassport}
      * @return Паспорт ТС
      */
-    public String getVehiclePassport() {
+    public @NotNull String getVehiclePassport() {
         return vehiclePassport;
     }
 }

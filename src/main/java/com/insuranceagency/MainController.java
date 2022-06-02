@@ -12,6 +12,12 @@ import java.io.IOException;
 public class MainController {
     @FXML
     private BorderPane borderPane;
+    public static BorderPane getBorderPane;
+
+    @FXML
+    void initialize() {
+        getBorderPane = borderPane;
+    }
 
     private Parent page;
     private FXMLLoader loader;
@@ -38,6 +44,10 @@ public class MainController {
 
     public void onChangePolicyMenuItem(ActionEvent actionEvent) {
         loader("view/policy/policy.fxml");
+    }
+
+    public void onAllPolicyMenuItem(ActionEvent actionEvent) {
+        loader("view/policy/allPolicies.fxml");
     }
 
     // Автомобиль

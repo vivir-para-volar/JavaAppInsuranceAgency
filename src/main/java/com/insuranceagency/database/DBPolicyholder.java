@@ -174,6 +174,8 @@ public class DBPolicyholder {
      * @return Найденный страхователь
      */
     public static Policyholder searchPolicyholderTelephoneOrPassport(@NotNull String telephoneOrPassport) throws Exception{
+        if(telephoneOrPassport == null || telephoneOrPassport.isEmpty()) throw new Exception("Телефон или паспорт страхователя не выбран");
+
         String query = String.format("SELECT * FROM policyholders WHERE telephone = '%s' OR passport = '%s'", telephoneOrPassport, telephoneOrPassport);
         return searchPolicyholder(query);
     }
@@ -194,17 +196,15 @@ public class DBPolicyholder {
      * @return Найденный страхователь
      */
     private static Policyholder searchPolicyholder(@NotNull String query) throws Exception{
-        if (query == null) throw new Exception("Запрос не выбран");
+        if (query == null || query.isEmpty()) throw new Exception("Запрос не выбран");
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            int countRow = 0;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             while (resultSet.next()) {
-                countRow++;
 
                 int id = resultSet.getInt("id");
                 String fullName = resultSet.getString("fullName");
@@ -215,15 +215,11 @@ public class DBPolicyholder {
                 String telephone = resultSet.getString("telephone");
                 String passport = resultSet.getString("passport");
 
-                var policyholder = new Policyholder(id, fullName, birthday, telephone, passport);
-                return policyholder;
+                return new Policyholder(id, fullName, birthday, telephone, passport);
             }
 
-            if (countRow == 0) {
-                flag = true;
-                throw new Exception("Данный страхователь не существует");
-            }
-            return null;
+            flag = true;
+            throw new Exception("Данный страхователь не существует");
 
         }catch (Exception exp) {
             if (flag) throw exp;

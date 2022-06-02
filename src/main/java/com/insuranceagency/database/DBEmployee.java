@@ -205,6 +205,8 @@ public class DBEmployee {
      * @return Найденный сотрудник
      */
     public static Employee searchEmployeeTelephoneOrPassport(@NotNull String telephoneOrPassport) throws Exception{
+        if(telephoneOrPassport == null || telephoneOrPassport.isEmpty()) throw new Exception("Телефон или паспорт сотрудника не выбран");
+
         String query = String.format("SELECT * FROM employees WHERE telephone = '%s' OR passport = '%s'", telephoneOrPassport, telephoneOrPassport);
         return searchEmployee(query);
     }
@@ -225,18 +227,15 @@ public class DBEmployee {
      * @return Найденный сотрудник
      */
     private static Employee searchEmployee(@NotNull String query) throws Exception{
-        if (query == null) throw new Exception("Запрос не выбран");
+        if (query == null || query.isEmpty()) throw new Exception("Запрос не выбран");
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            int countRow = 0;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             while (resultSet.next()) {
-                countRow++;
-
                 int id = resultSet.getInt("id");
                 String fullName = resultSet.getString("fullName");
 
@@ -248,15 +247,11 @@ public class DBEmployee {
                 String login = resultSet.getString("login");
                 String password = resultSet.getString("password");
 
-                var employee = new Employee(id, fullName, birthday, telephone, passport, login, password);
-                return employee;
+                return new Employee(id, fullName, birthday, telephone, passport, login, password);
             }
 
-            if (countRow == 0) {
-                flag = true;
-                throw new Exception("Данный сотрудник не существует");
-            }
-            return null;
+            flag = true;
+            throw new Exception("Данный сотрудник не существует");
 
         }catch (Exception exp) {
             if (flag) throw exp;

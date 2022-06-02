@@ -5,8 +5,6 @@ import com.insuranceagency.database.DBPersonAllowedToDrive;
 import com.insuranceagency.model.PersonAllowedToDrive;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -57,7 +55,7 @@ public class AllPersonsAllowedToDriveController {
         tablePersonsAllowedToDrive.getItems().clear();
 
         try{
-            ArrayList listPersonAllowedToDrive = DBPersonAllowedToDrive.allPersonsAllowedToDrive();
+            ArrayList<PersonAllowedToDrive> listPersonAllowedToDrive = DBPersonAllowedToDrive.allPersonsAllowedToDrive();
             ObservableList<PersonAllowedToDrive> list = FXCollections.observableArrayList(listPersonAllowedToDrive);
             tablePersonsAllowedToDrive.setItems(list);
         } catch (Exception exp) {
@@ -68,12 +66,9 @@ public class AllPersonsAllowedToDriveController {
             alert.showAndWait();
         }
 
-        tablePersonsAllowedToDrive.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PersonAllowedToDrive>() {
-            @Override
-            public void changed(ObservableValue<? extends PersonAllowedToDrive> observableValue, PersonAllowedToDrive personAllowedToDrive, PersonAllowedToDrive p1) {
-                if (p1 != null) {
-                    selectedPersonAllowedToDrive = p1;
-                }
+        tablePersonsAllowedToDrive.getSelectionModel().selectedItemProperty().addListener((observableValue, personAllowedToDrive, p1) -> {
+            if (p1 != null) {
+                selectedPersonAllowedToDrive = p1;
             }
         });
     }

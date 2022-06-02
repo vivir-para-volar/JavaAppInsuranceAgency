@@ -6,7 +6,6 @@ import com.insuranceagency.model.Car;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -21,15 +20,12 @@ public class ChangeCarController {
     private TextField tfRegistrationPlate;
     @FXML
     private TextField tfVehiclePassport;
-    @FXML
-    private Button btnCancel;
 
     private Car car;
 
     private Stage dialogStage;
     public void setAddStage(Stage addStage, int id) {
         this.dialogStage = addStage;
-        btnCancel.setVisible(true);
 
         try {
             car = DBCar.searchCarID(id);
@@ -76,13 +72,13 @@ public class ChangeCarController {
      */
     private void readDate() throws Exception {
         String registrationPlate = tfRegistrationPlate.getText().trim();
-        if (registrationPlate == "")
+        if (registrationPlate.isEmpty())
         {
             throw new Exception("Заполните поле Регистрационный знак");
         }
 
         String vehiclePassport = tfVehiclePassport.getText().trim();
-        if (vehiclePassport == "") {
+        if (vehiclePassport.isEmpty()) {
             throw new Exception("Заполните поле Паспорт ТС");
         }
         if (vehiclePassport.length() != 10) {
@@ -157,13 +153,6 @@ public class ChangeCarController {
             alert.setContentText(exp.getMessage());
             alert.showAndWait();
         }
-    }
-
-    /**
-     * Закрывает текущее окно
-     */
-    public void onCancel(ActionEvent actionEvent) {
-        dialogStage.close();
     }
 
     /**

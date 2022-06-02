@@ -1,13 +1,11 @@
 package com.insuranceagency.database;
 
+import com.insuranceagency.model.PersonAllowedToDrive;
 import com.insuranceagency.model.Policy;
-import com.insuranceagency.model.Policyholder;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class DBPolicy {
     public static ArrayList<Policy> allPolicies() throws Exception {
         var resultList = new ArrayList<Policy>();
 
-        String query = "SELECT * FROM policy ORDER BY dateOfConclusion DESC";
+        String query = "SELECT * FROM policies ORDER BY dateOfConclusion DESC";
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
@@ -45,6 +43,7 @@ public class DBPolicy {
                 int employeeId = resultSet.getInt("employeeId");
 
                 var policy = new Policy(id, insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId);
+                policy.searchName();
                 resultList.add(policy);
             }
 
@@ -56,21 +55,42 @@ public class DBPolicy {
     }
 
     /**
-     * Добавление страхователя в БД
-     * @param policyholder Страхователь
+     * Добавление полиса в БД
+     * @param policy Полис
      */
-    public static void addPolicyholder(@NotNull Policyholder policyholder) throws Exception {
-        if (policyholder == null) throw new Exception("Страхователь не выбран");
+    public static void addPolicyWithConnections(@NotNull Policy policy, @NotNull ArrayList<PersonAllowedToDrive> listPersonAllowedToDrive) throws Exception {
+        if (policy == null) throw new Exception("Полис не выбран");
+        if (listPersonAllowedToDrive == null || listPersonAllowedToDrive.size() == 0) throw new Exception("Список лиц, допущенных к управлению, не выбран");
 
-        String query1 = String.format("SELECT id FROM policyholders WHERE telephone = '%s'", policyholder.getTelephone());
-        String query2 = String.format("SELECT id FROM policyholders WHERE passport = '%s'", policyholder.getPassport());
+        String query1 = String.format("SELECT id FROM policyholders WHERE id = %d", policy.getPolicyholderId());
+        String query2 = String.format("SELECT id FROM cars WHERE id = %d", policy.getCarId());
+        String query3 = String.format("SELECT id FROM employees WHERE id = %d", policy.getEmployeeId());
+        String query4 = String.format("SELECT MAX(expirationDate) FROM policies WHERE insuranceType = '%s' AND carId = '%d'",
+                                        policy.getInsuranceType(), policy.getCarId());
+
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String query = String.format("INSERT INTO policyholders (fullName, birthday, telephone, passport) VALUES('%s', '%s', '%s', '%s')",
-                policyholder.getFullName(),
-                policyholder.getBirthday().format(formatter),
-                policyholder.getTelephone(),
-                policyholder.getPassport());
+        String queryP1 = String.format("INSERT INTO policies(insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId) " +
+                        "VALUES('%s', %d, %d, '%s', '%s', %d, %d, %d); ",
+                policy.getInsuranceType(),
+                policy.getInsurancePremium(),
+                policy.getInsuranceAmount(),
+                policy.getDateOfConclusion().format(formatter),
+                policy.getExpirationDate().format(formatter),
+                policy.getPolicyholderId(),
+                policy.getCarId(),
+                policy.getEmployeeId());
+
+        String queryP2 = "SET @id := LAST_INSERT_ID();";
+
+        StringBuilder queryP3 = new StringBuilder("INSERT INTO connections(policyId, personAllowedToDriveId) VALUES ");
+        int size = listPersonAllowedToDrive.size();
+        for (var i = 0; i < size - 1; i++)
+        {
+            queryP3.append(String.format("(@id, %d), ", listPersonAllowedToDrive.get(i).getId()));
+        }
+        queryP3.append(String.format("(@id, %d); ", listPersonAllowedToDrive.get(size - 1).getId()));
+
 
         boolean flag = false;
 
@@ -80,20 +100,52 @@ public class DBPolicy {
             ResultSet resultSet = statement.executeQuery(query1);
             int countRow = 0;
             while (resultSet.next()) countRow++;
-            if (countRow != 0) {
+            if (countRow == 0) {
                 flag = true;
-                throw new Exception("Данный телефон уже используется");
+                throw new Exception("Данный страхователь не существует");
             }
 
             resultSet = statement.executeQuery(query2);
             countRow = 0;
             while (resultSet.next()) countRow++;
-            if (countRow != 0) {
+            if (countRow == 0) {
                 flag = true;
-                throw new Exception("Данный паспорт уже используется");
+                throw new Exception("Данный автомобиль не существует");
             }
 
-            statement.executeUpdate(query);
+            resultSet = statement.executeQuery(query3);
+            countRow = 0;
+            while (resultSet.next()) countRow++;
+            if (countRow == 0) {
+                flag = true;
+                throw new Exception("Данный сотрудник не существует");
+            }
+
+            resultSet = statement.executeQuery(query4);
+            resultSet.next();
+            String dateTemp = resultSet.getString(1);
+            if(dateTemp != null) {
+                LocalDate date = LocalDate.parse(dateTemp, formatter);
+                if(date.isAfter(policy.getDateOfConclusion()) || date.isEqual(policy.getDateOfConclusion())){
+                    flag = true;
+                    throw new Exception("Нельзя оформить полис на заданный период, так как уже действует другой");
+                }
+            }
+
+
+            // Сброс автофиксации
+            connection.setAutoCommit(false);
+            // Первый запрос
+            PreparedStatement updateSales = connection.prepareStatement(queryP1);
+            updateSales.executeUpdate();
+            // Второй запрос
+            updateSales = connection.prepareStatement(queryP2);
+            updateSales.executeUpdate();
+            // Третий запрос
+            updateSales = connection.prepareStatement(queryP3.toString());
+            updateSales.executeUpdate();
+            // Завершение транзакции
+            connection.commit();
         } catch (Exception exp) {
             if (flag) throw exp;
             else throw new Exception("Ошибка в работе БД");
@@ -101,50 +153,46 @@ public class DBPolicy {
     }
 
     /**
-     * Изменение страхователя в БД
-     * @param policyholder Страхователь
+     * Изменение полиса в БД
+     * @param policy Полис
+     * @param listPersonAllowedToDrive Список лиц, допущенных к управлению
      */
-    public static void changePolicyholder(@NotNull Policyholder policyholder) throws Exception {
-        if (policyholder == null) throw new Exception("Страхователь не выбран");
+    public static void changePolicyWithConnections(@NotNull Policy policy, @NotNull ArrayList<PersonAllowedToDrive> listPersonAllowedToDrive) throws Exception {
+        if (policy == null) throw new Exception("Полис не выбран");
+        if (listPersonAllowedToDrive == null  || listPersonAllowedToDrive.size() == 0) throw new Exception("Список лиц, допущенных к управлению, не выбран");
 
-        String query1 = String.format("SELECT id FROM policyholders WHERE telephone = '%s' AND id <> %d",
-                policyholder.getTelephone(),
-                policyholder.getId());
-        String query2 = String.format("SELECT id FROM policyholders WHERE passport = '%s' AND id <> %d",
-                policyholder.getPassport(),
-                policyholder.getId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String queryP1 = String.format("UPDATE policies SET insurancePremium = %d, expirationDate = '%s' WHERE id = %d; ",
+                policy.getInsurancePremium(),
+                policy.getExpirationDate().format(formatter),
+                policy.getId());
 
-        String query = String.format("UPDATE policyholders SET fullName = '%s', telephone = '%s', passport = '%s' WHERE id = %d",
-                policyholder.getFullName(),
-                policyholder.getTelephone(),
-                policyholder.getPassport(),
-                policyholder.getId());
+        String queryP2 = String.format("DELETE FROM connections WHERE policyId = %d; ", policy.getId());
 
-        boolean flag = false;
+        StringBuilder queryP3 = new StringBuilder("INSERT INTO connections(policyId, personAllowedToDriveId) VALUES ");
+        int size = listPersonAllowedToDrive.size();
+        for (var i = 0; i < size - 1; i++)
+        {
+            queryP3.append(String.format("(%d, %d), ", policy.getId(), listPersonAllowedToDrive.get(i).getId()));
+        }
+        queryP3.append(String.format("(%d, %d); ", policy.getId(), listPersonAllowedToDrive.get(size - 1).getId()));
 
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery(query1);
-            int countRow = 0;
-            while (resultSet.next()) countRow++;
-            if (countRow != 0) {
-                flag = true;
-                throw new Exception("Данный телефон уже используется");
-            }
-
-            resultSet = statement.executeQuery(query2);
-            countRow = 0;
-            while (resultSet.next()) countRow++;
-            if (countRow != 0) {
-                flag = true;
-                throw new Exception("Данный паспорт уже используется");
-            }
-
-            statement.executeUpdate(query);
+            // Сброс автофиксации
+            connection.setAutoCommit(false);
+            // Первый запрос
+            PreparedStatement updateSales = connection.prepareStatement(queryP1);
+            updateSales.executeUpdate();
+            // Второй запрос
+            PreparedStatement deleteSales = connection.prepareStatement(queryP2);
+            deleteSales.executeUpdate();
+            // Третий запрос
+            updateSales = connection.prepareStatement(queryP3.toString());
+            updateSales.executeUpdate();
+            // Завершение транзакции
+            connection.commit();
         } catch (Exception exp) {
-            if (flag) throw exp;
-            else throw new Exception("Ошибка в работе БД");
+            throw new Exception("Ошибка в работе БД");
         }
     }
 
@@ -156,7 +204,7 @@ public class DBPolicy {
     public static ArrayList<Policy> searchPolicyPolicyholderId(int policyholderId) throws Exception{
         var resultList = new ArrayList<Policy>();
 
-        String query = String.format("SELECT * FROM policies WHERE policyholderID = '%d' ORDER BY dateOfConclusion DESC", policyholderId);
+        String query = String.format("SELECT * FROM policies WHERE policyholderID = %d ORDER BY dateOfConclusion DESC", policyholderId);
 
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
@@ -179,6 +227,7 @@ public class DBPolicy {
                 int employeeId = resultSet.getInt("employeeId");
 
                 var policy = new Policy(id, insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId);
+                policy.searchName();
                 resultList.add(policy);
             }
 
@@ -202,11 +251,8 @@ public class DBPolicy {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            int countRow = 0;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             while (resultSet.next()) {
-                countRow++;
-
                 String insuranceType = resultSet.getString("insuranceType");
                 int insurancePremium = resultSet.getInt("insurancePremium");
                 int insuranceAmount = resultSet.getInt("insuranceAmount");
@@ -221,15 +267,11 @@ public class DBPolicy {
                 int carId = resultSet.getInt("carId");
                 int employeeId = resultSet.getInt("employeeId");
 
-                var policy = new Policy(id, insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId);
-                return policy;
+                return new Policy(id, insuranceType, insurancePremium, insuranceAmount, dateOfConclusion, expirationDate, policyholderId, carId, employeeId);
             }
 
-            if (countRow == 0) {
-                flag = true;
-                throw new Exception("Данный полис не существует");
-            }
-            return null;
+            flag = true;
+            throw new Exception("Данный полис не существует");
 
         }catch (Exception exp) {
             if (flag) throw exp;

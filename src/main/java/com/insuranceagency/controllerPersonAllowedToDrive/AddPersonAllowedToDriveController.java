@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class AddPersonAllowedToDriveController {
     @FXML
@@ -14,18 +15,28 @@ public class AddPersonAllowedToDriveController {
     @FXML
     private TextField tfDrivingLicence;
 
+    private PersonAllowedToDrive personAllowedToDriveForPolicy;
+    public PersonAllowedToDrive getPersonAllowedToDriveForPolicy(){
+        return personAllowedToDriveForPolicy;
+    }
+
+    private Stage dialogStage;
+    public void setAddStage(Stage addStage) {
+        this.dialogStage = addStage;
+    }
+
     /**
      * Считывание данных с формы и проверка правильности введённых данных
      * @return Сформированное лицо, допущенное к управлению
      */
-    private PersonAllowedToDrive ReadDate() throws Exception {
+    private PersonAllowedToDrive readDate() throws Exception {
         String fullName = tfFullName.getText().trim();
-        if (fullName == "") {
+        if (fullName.isEmpty()) {
             throw new Exception("Заполните поле ФИО");
         }
 
         String drivingLicence = tfDrivingLicence.getText().trim();
-        if (drivingLicence == "") {
+        if (drivingLicence.isEmpty()) {
             throw new Exception("Заполните поле Водительское удостоверение");
         }
         if (drivingLicence.length() != 10) {
@@ -37,8 +48,7 @@ public class AddPersonAllowedToDriveController {
             }
         }
 
-        PersonAllowedToDrive personAllowedToDrive = new PersonAllowedToDrive(fullName, drivingLicence);
-        return personAllowedToDrive;
+        return new PersonAllowedToDrive(fullName, drivingLicence);
     }
 
     /**
@@ -47,7 +57,7 @@ public class AddPersonAllowedToDriveController {
     public void onAdd(ActionEvent actionEvent) {
         try
         {
-            PersonAllowedToDrive personAllowedToDrive = ReadDate();
+            PersonAllowedToDrive personAllowedToDrive = readDate();
             DBPersonAllowedToDrive.addPersonAllowedToDrive(personAllowedToDrive);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -56,7 +66,11 @@ public class AddPersonAllowedToDriveController {
             alert.setContentText("Лицо, допущенное к управлению, успешно добавлено");
             alert.showAndWait();
 
-            clear();
+            if(dialogStage != null ){
+                personAllowedToDriveForPolicy = DBPersonAllowedToDrive.searchPersonAllowedToDriveDrivingLicence(personAllowedToDrive.getDrivingLicence());
+                dialogStage.close();
+            }
+            else clear();
         } catch (Exception exc) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

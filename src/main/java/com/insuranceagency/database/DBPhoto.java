@@ -39,7 +39,6 @@ public class DBPhoto {
             }
 
             return resultList;
-
         } catch (Exception exp) {
             throw new Exception("Ошибка в работе БД");
         }

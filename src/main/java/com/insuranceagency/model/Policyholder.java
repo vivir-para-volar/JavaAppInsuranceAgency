@@ -75,7 +75,7 @@ public class Policyholder {
      * Функция получения значение поля {@link Policyholder#fullName}
      * @return ФИО
      */
-    public String getFullName() {
+    public @NotNull String getFullName() {
         return fullName;
     }
 
@@ -83,7 +83,7 @@ public class Policyholder {
      * Функция получения значение поля {@link Policyholder#birthday}
      * @return Дата рождения
      */
-    public LocalDate getBirthday() {
+    public @NotNull LocalDate getBirthday() {
         return birthday;
     }
 
@@ -91,7 +91,7 @@ public class Policyholder {
      * Функция получения значение поля {@link Policyholder#telephone}
      * @return Номер телефона
      */
-    public String getTelephone() {
+    public @NotNull String getTelephone() {
         return telephone;
     }
 
@@ -99,7 +99,7 @@ public class Policyholder {
      * Функция получения значение поля {@link Policyholder#passport}
      * @return Паспорт
      */
-    public String getPassport() {
+    public @NotNull String getPassport() {
         return passport;
     }
 }

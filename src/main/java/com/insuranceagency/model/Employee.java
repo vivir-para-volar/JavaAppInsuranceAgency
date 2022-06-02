@@ -96,7 +96,7 @@ public class Employee {
      * Функция получения значение поля {@link Employee#fullName}
      * @return ФИО
      */
-    public String getFullName() {
+    public @NotNull String getFullName() {
         return fullName;
     }
 
@@ -104,7 +104,7 @@ public class Employee {
      * Функция получения значение поля {@link Employee#birthday}
      * @return Дата рождения
      */
-    public LocalDate getBirthday() {
+    public @NotNull LocalDate getBirthday() {
         return birthday;
     }
 
@@ -112,7 +112,7 @@ public class Employee {
      * Функция получения значение поля {@link Employee#telephone}
      * @return Номер телефона
      */
-    public String getTelephone() {
+    public @NotNull String getTelephone() {
         return telephone;
     }
 
@@ -120,7 +120,7 @@ public class Employee {
      * Функция получения значение поля {@link Employee#passport}
      * @return Паспорт
      */
-    public String getPassport() {
+    public @NotNull String getPassport() {
         return passport;
     }
 
@@ -128,7 +128,7 @@ public class Employee {
      * Функция получения значение поля {@link Employee#login}
      * @return Логин
      */
-    public String getLogin() {
+    public @NotNull String getLogin() {
         return login;
     }
 
@@ -136,7 +136,7 @@ public class Employee {
      * Функция получения значение поля {@link Employee#password}
      * @return Пароль
      */
-    public String getPassword() {
+    public @NotNull String getPassword() {
         return password;
     }
 }

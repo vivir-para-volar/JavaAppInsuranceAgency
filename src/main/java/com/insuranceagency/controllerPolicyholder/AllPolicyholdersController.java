@@ -6,8 +6,6 @@ import com.insuranceagency.model.Policyholder;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,10 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -42,7 +37,15 @@ public class AllPolicyholdersController {
     @FXML
     private TableColumn<Policyholder, String> passportColumn;
 
+    @FXML
+    private Button btnChangeChoose;
+
     private Policyholder selectedPolicyholder;
+
+    private Policyholder policyholderForPolicy;
+    public Policyholder getPolicyholderForPolicy(){
+        return policyholderForPolicy;
+    }
 
     @FXML
     void initialize() {
@@ -62,6 +65,12 @@ public class AllPolicyholdersController {
         fillTable();
     }
 
+    private Stage dialogStage;
+    public void setAddStage(Stage addStage) {
+        btnChangeChoose.setText("Выбрать");
+        this.dialogStage = addStage;
+    }
+
     /**
      * Заполнение таблицы
      */
@@ -69,7 +78,7 @@ public class AllPolicyholdersController {
         tablePolicyholders.getItems().clear();
 
         try{
-            ArrayList listPolicyholders = DBPolicyholder.allPolicyholders();
+            ArrayList<Policyholder> listPolicyholders = DBPolicyholder.allPolicyholders();
             ObservableList<Policyholder> list = FXCollections.observableArrayList(listPolicyholders);
             tablePolicyholders.setItems(list);
         } catch (Exception exp) {
@@ -80,12 +89,9 @@ public class AllPolicyholdersController {
             alert.showAndWait();
         }
 
-        tablePolicyholders.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Policyholder>() {
-            @Override
-            public void changed(ObservableValue<? extends Policyholder> observableValue, Policyholder policyholder, Policyholder p1) {
-                if (p1 != null) {
-                    selectedPolicyholder = p1;
-                }
+        tablePolicyholders.getSelectionModel().selectedItemProperty().addListener((observableValue, policyholder, p1) -> {
+            if (p1 != null) {
+                selectedPolicyholder = p1;
             }
         });
     }
@@ -109,12 +115,19 @@ public class AllPolicyholdersController {
     }
 
     /**
-     * По нажатию на кнопку "Изменить" проверяет выбран ли страхователь и вызывает метод показа сцены изменения
+     * По нажатию на кнопку "Изменить/Выбрать" проверяет выбран ли страхователь
+     * и вызывает метод показа сцены изменения или закрытие сцены
      */
-    public void onChangePolicyholder(ActionEvent actionEvent) {
+    public void onChangeChoosePolicyholder(ActionEvent actionEvent) {
         if(tablePolicyholders.isFocused() && selectedPolicyholder != null) {
-            showDialogChange(selectedPolicyholder);
-            fillTable();
+            if(dialogStage != null ){
+                policyholderForPolicy = selectedPolicyholder;
+                dialogStage.close();
+            }
+            else {
+                showDialogChange(selectedPolicyholder);
+                fillTable();
+            }
         }
         else{
             Alert alert = new Alert(Alert.AlertType.ERROR);

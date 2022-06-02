@@ -45,6 +45,8 @@ public class AuthorizationController {
             Scene scene = new Scene(fxmlLoader.load(), 800, 600);
             Stage stage = new Stage();
             stage.setTitle("Страховое агентство");
+            stage.setMinWidth(800);
+            stage.setMinHeight(600);
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();

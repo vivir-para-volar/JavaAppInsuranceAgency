@@ -6,8 +6,6 @@ import com.insuranceagency.model.Employee;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -73,7 +71,7 @@ public class AllEmployeesController {
         tableEmployees.getItems().clear();
 
         try{
-            ArrayList listEmployees = DBEmployee.allEmployees();
+            ArrayList<Employee> listEmployees = DBEmployee.allEmployees();
             ObservableList<Employee> list = FXCollections.observableArrayList(listEmployees);
             tableEmployees.setItems(list);
         } catch (Exception exp) {
@@ -84,12 +82,9 @@ public class AllEmployeesController {
             alert.showAndWait();
         }
 
-        tableEmployees.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Employee>() {
-            @Override
-            public void changed(ObservableValue<? extends Employee> observableValue, Employee employee, Employee e1) {
-                if (e1 != null) {
-                    selectedEmployee = e1;
-                }
+        tableEmployees.getSelectionModel().selectedItemProperty().addListener((observableValue, employee, e1) -> {
+            if (e1 != null) {
+                selectedEmployee = e1;
             }
         });
     }

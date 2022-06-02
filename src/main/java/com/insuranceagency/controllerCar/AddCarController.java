@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class AddCarController {
     @FXML
@@ -18,13 +19,23 @@ public class AddCarController {
     @FXML
     private TextField tfVehiclePassport;
 
+    private Car carForPolicy;
+    public Car getCarForPolicy(){
+        return carForPolicy;
+    }
+
+    private Stage dialogStage;
+    public void setAddStage(Stage addStage) {
+        this.dialogStage = addStage;
+    }
+
     /**
      * Считывание данных с формы и проверка правильности введённых данных
      * @return Сформированный автомобиль
      */
-    private Car ReadDate() throws Exception {
+    private Car readDate() throws Exception {
         String model = tfModel.getText().trim();
-        if (model == "") {
+        if (model.isEmpty()) {
             throw new Exception("Заполните поле Модель");
         }
 
@@ -35,13 +46,13 @@ public class AddCarController {
         }
 
         String registrationPlate = tfRegistrationPlate.getText().trim();
-        if (registrationPlate == "")
+        if (registrationPlate.isEmpty())
         {
             throw new Exception("Заполните поле Регистрационный знак");
         }
 
         String vehiclePassport = tfVehiclePassport.getText().trim();
-        if (vehiclePassport == "") {
+        if (vehiclePassport.isEmpty()) {
             throw new Exception("Заполните поле Паспорт ТС");
         }
         if (vehiclePassport.length() != 10) {
@@ -52,7 +63,6 @@ public class AddCarController {
             {
                 throw new Exception("Первые два символа серии паспорта ТС должны быть цифрами");
             }
-            boolean temp = Character.isLetter(vehiclePassport.charAt(i));
             if ((i == 2 || i == 3) && !Character.isLetter(vehiclePassport.charAt(i)))
             {
                 throw new Exception("Последние два символа серии паспорта ТС должны быть буквами");
@@ -63,8 +73,7 @@ public class AddCarController {
             }
         }
 
-        var car = new Car(model, vin, registrationPlate, vehiclePassport);
-        return car;
+        return new Car(model, vin, registrationPlate, vehiclePassport);
     }
 
     /**
@@ -73,7 +82,7 @@ public class AddCarController {
     public void onAdd(ActionEvent actionEvent) {
         try
         {
-            Car car = ReadDate();
+            Car car = readDate();
             DBCar.addCar(car);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -82,7 +91,11 @@ public class AddCarController {
             alert.setContentText("Автомобиль успешно добавлен");
             alert.showAndWait();
 
-            clear();
+            if(dialogStage != null ){
+                carForPolicy = DBCar.searchCarVin(car.getVin());
+                dialogStage.close();
+            }
+            else clear();
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

@@ -1,12 +1,11 @@
 package com.insuranceagency.controllerPersonAllowedToDrive;
 
 import com.insuranceagency.database.DBPersonAllowedToDrive;
-import com.insuranceagency.database.DBPolicyholder;
 import com.insuranceagency.model.PersonAllowedToDrive;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -17,15 +16,12 @@ public class ChangePersonAllowedToDriveController {
     private  TextField tfFullName;
     @FXML
     private  TextField tfDrivingLicence;
-    @FXML
-    private Button btnCancel;
 
     private PersonAllowedToDrive personAllowedToDrive;
 
     private Stage dialogStage;
     public void setAddStage(Stage addStage, int id) {
         this.dialogStage = addStage;
-        btnCancel.setVisible(true);
 
         try {
             personAllowedToDrive = DBPersonAllowedToDrive.searchPersonAllowedToDriveID(id);
@@ -70,12 +66,12 @@ public class ChangePersonAllowedToDriveController {
      */
     private void readDate() throws Exception {
         String fullName = tfFullName.getText().trim();
-        if (fullName == "") {
+        if (fullName.isEmpty()) {
             throw new Exception("Заполните поле ФИО");
         }
 
         String drivingLicence = tfDrivingLicence.getText().trim();
-        if (drivingLicence == "") {
+        if (drivingLicence.isEmpty()) {
             throw new Exception("Заполните поле Водительское удостоверение");
         }
         if (drivingLicence.length() != 10) {
@@ -141,13 +137,6 @@ public class ChangePersonAllowedToDriveController {
             alert.setContentText(exp.getMessage());
             alert.showAndWait();
         }
-    }
-
-    /**
-     * Закрывает текущее окно
-     */
-    public void onCancel(ActionEvent actionEvent) {
-        dialogStage.close();
     }
 
     /**

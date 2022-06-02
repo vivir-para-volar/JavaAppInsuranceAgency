@@ -133,6 +133,8 @@ public class DBCar {
      * @return Найденный автомобиль
      */
     public static Car searchCarVin(@NotNull String vin) throws Exception{
+        if(vin == null || vin.isEmpty()) throw new Exception("VIN автомобиля не выбран");
+
         String query = String.format("SELECT * FROM cars WHERE vin = '%s'", vin);
         return searchCar(query);
     }
@@ -153,33 +155,25 @@ public class DBCar {
      * @return Найденный автомобиль
      */
     private static Car searchCar(@NotNull String query) throws Exception{
-        if (query == null) throw new Exception("Запрос не выбран");
+        if (query == null || query.isEmpty()) throw new Exception("Запрос не выбран");
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            int countRow = 0;
             while (resultSet.next()) {
-                countRow++;
-
                 int id = resultSet.getInt("id");
                 String model = resultSet.getString("model");
                 String vin = resultSet.getString("vin");
                 String registrationPlate = resultSet.getString("registrationPlate");
                 String vehiclePassport = resultSet.getString("vehiclePassport");
 
-                var car = new Car(id, model, vin, registrationPlate, vehiclePassport);
-                return car;
+                return new Car(id, model, vin, registrationPlate, vehiclePassport);
             }
 
-            if (countRow == 0) {
-                flag = true;
-                throw new Exception("Данный автомобиль не существует");
-            }
-            return null;
-
+            flag = true;
+            throw new Exception("Данный автомобиль не существует");
         }catch (Exception exp) {
             if (flag) throw exp;
             else throw new Exception("Ошибка в работе БД");

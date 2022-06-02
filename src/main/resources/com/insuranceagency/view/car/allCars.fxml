@@ -57,7 +57,7 @@
         </TableView>
         <HBox alignment="CENTER" prefHeight="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <Button focusTraversable="false" mnemonicParsing="false" onAction="#onChangeCar" text="Изменить" />
+                <Button fx:id="btnChangeChoose" focusTraversable="false" mnemonicParsing="false" onAction="#onChangeChooseCar" text="Изменить" />
                 <Button mnemonicParsing="false" onAction="#onClear" text="Исходное состояние">
                     <HBox.margin>
                         <Insets left="50.0" />

@@ -54,7 +54,7 @@ public class PersonAllowedToDrive {
      * Функция получения значение поля {@link PersonAllowedToDrive#fullName}
      * @return ФИО
      */
-    public String getFullName() {
+    public @NotNull String getFullName() {
         return fullName;
     }
 
@@ -62,7 +62,7 @@ public class PersonAllowedToDrive {
      * Функция получения значение поля {@link PersonAllowedToDrive#fullName}
      * @return Водительское удостоверение
      */
-    public String getDrivingLicence() {
+    public @NotNull String getDrivingLicence() {
         return drivingLicence;
     }
 }

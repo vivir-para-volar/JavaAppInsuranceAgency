@@ -16,7 +16,7 @@
          <children>
             <Label text="Изменение/удаление страхователя" textAlignment="CENTER">
                <font>
-                  <Font size="16.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
             <HBox alignment="CENTER" prefHeight="70.0">
@@ -79,11 +79,6 @@
                </HBox.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#onDelete" text="Удалить" />
-            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onCancel" text="Отмена" visible="false">
-               <HBox.margin>
-                  <Insets left="50.0" />
-               </HBox.margin>
-            </Button>
          </children>
       </HBox>
    </children>

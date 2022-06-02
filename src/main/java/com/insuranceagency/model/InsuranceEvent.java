@@ -74,7 +74,7 @@ public class InsuranceEvent {
      * Функция получения значение поля {@link InsuranceEvent#date}
      * @return Дата
      */
-    public LocalDate getDate() {
+    public @NotNull LocalDate getDate() {
         return date;
     }
 
@@ -90,7 +90,7 @@ public class InsuranceEvent {
      * Функция получения значение поля {@link InsuranceEvent#description}
      * @return Описание
      */
-    public String getDescription() {
+    public @NotNull String getDescription() {
         return description;
     }
 

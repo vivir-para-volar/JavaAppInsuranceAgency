@@ -35,16 +35,16 @@ public class AddEmployeeController {
      * Считывание данных с формы и проверка правильности введённых данных
      * @return Сформированный сотрудник
      */
-    private Employee ReadDate() throws Exception {
+    private Employee readDate() throws Exception {
         String fullName = tfFullName.getText().trim();
-        if (fullName == "") {
+        if (fullName.isEmpty()) {
             throw new Exception("Заполните поле ФИО");
         }
 
         LocalDate birthday = dpBirthday.getValue();
 
         String telephone = tfTelephone.getText().trim();
-        if (telephone == "") {
+        if (telephone.isEmpty()) {
             throw new Exception("Заполните поле Номер телефона");
         }
         if (telephone.length() > 15) {
@@ -57,7 +57,7 @@ public class AddEmployeeController {
         }
 
         String passport = tfPassport.getText().trim();
-        if (passport == "") {
+        if (passport.isEmpty()) {
             throw new Exception("Заполните поле Паспорт");
         }
         if (passport.length() != 10) {
@@ -70,7 +70,7 @@ public class AddEmployeeController {
         }
 
         String login = tfLogin.getText().trim();
-        if (login == "") {
+        if (login.isEmpty()) {
             throw new Exception("Заполните поле Логин");
         }
         if (login.length() < 4 || login.length() > 32)
@@ -84,7 +84,7 @@ public class AddEmployeeController {
         }
 
         String password = pfPassword.getText().trim();
-        if (password == "") {
+        if (password.isEmpty()) {
             throw new Exception("Заполните поле Пароль");
         }
         if (password.length() < 4 || password.length() > 32)
@@ -97,8 +97,7 @@ public class AddEmployeeController {
             }
         }
 
-        var employee = new Employee(fullName, birthday, telephone, passport, login, password);
-        return employee;
+        return new Employee(fullName, birthday, telephone, passport, login, password);
     }
 
     /**
@@ -107,7 +106,7 @@ public class AddEmployeeController {
     public void onAdd(ActionEvent actionEvent) {
         try
         {
-            Employee employee = ReadDate();
+            Employee employee = readDate();
             DBEmployee.addEmployee(employee);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

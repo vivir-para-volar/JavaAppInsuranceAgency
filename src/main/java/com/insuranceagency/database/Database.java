@@ -53,6 +53,7 @@ public class Database {
      */
     public static void authorization(String login, String password) throws Exception {
         String query = String.format("SELECT * FROM employees WHERE login = '%s' AND password = '%s'", login, getHash(password));
+        //String query = String.format("SELECT * FROM employees WHERE id = 2");
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {
@@ -92,13 +93,5 @@ public class Database {
      */
     public static Employee getUser() {
         return user;
-    }
-
-    /**
-     * Функция изменения значение поля {@link Database#user}
-     * @param user Текущей пользователь
-     */
-    public static void setUser(Employee user) {
-        Database.user = user;
     }
 }

@@ -6,7 +6,6 @@ import com.insuranceagency.model.Employee;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -28,15 +27,12 @@ public class ChangeEmployeeController {
     private TextField tfLogin;
     @FXML
     private PasswordField pfPassword;
-    @FXML
-    private Button btnCancel;
 
     private Employee employee;
 
     private Stage dialogStage;
     public void setAddStage(Stage addStage, int id) {
         this.dialogStage = addStage;
-        btnCancel.setVisible(true);
 
         try {
             employee = DBEmployee.searchEmployeeID(id);
@@ -87,12 +83,12 @@ public class ChangeEmployeeController {
      */
     private void readDate() throws Exception {
         String fullName = tfFullName.getText().trim();
-        if (fullName == "") {
+        if (fullName.isEmpty()) {
             throw new Exception("Заполните поле ФИО");
         }
 
         String telephone = tfTelephone.getText().trim();
-        if (telephone == "") {
+        if (telephone.isEmpty()) {
             throw new Exception("Заполните поле Номер телефона");
         }
         if (telephone.length() > 15) {
@@ -105,7 +101,7 @@ public class ChangeEmployeeController {
         }
 
         String passport = tfPassport.getText().trim();
-        if (passport == "") {
+        if (passport.isEmpty()) {
             throw new Exception("Заполните поле Паспорт");
         }
         if (passport.length() != 10) {
@@ -118,7 +114,7 @@ public class ChangeEmployeeController {
         }
 
         String login = tfLogin.getText().trim();
-        if (login == "") {
+        if (login.isEmpty()) {
             throw new Exception("Заполните поле Логин");
         }
         if (login.length() < 4 || login.length() > 32)
@@ -132,7 +128,7 @@ public class ChangeEmployeeController {
         }
 
         String password = pfPassword.getText().trim();
-        if (password == "") {
+        if (password.isEmpty()) {
             password = employee.getPassword();
         }
         else {
@@ -157,8 +153,7 @@ public class ChangeEmployeeController {
             if (employee == null) throw new Exception("Сотрудник не выбран");
 
             readDate();
-            boolean changePassword = true;
-            if (pfPassword.getText().trim() == "") changePassword = false;
+            boolean changePassword = !pfPassword.getText().trim().isEmpty();
             DBEmployee.changeEmployee(employee, changePassword);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -202,13 +197,6 @@ public class ChangeEmployeeController {
             alert.setContentText(exp.getMessage());
             alert.showAndWait();
         }
-    }
-
-    /**
-     * Закрывает текущее окно
-     */
-    public void onCancel(ActionEvent actionEvent) {
-        dialogStage.close();
     }
 
     /**
