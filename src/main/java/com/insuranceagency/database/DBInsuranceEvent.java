@@ -21,7 +21,7 @@ public class DBInsuranceEvent {
         if (insuranceEvent == null) throw new Exception("Страховой случай не выбран");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String query = String.format("INSERT INTO InsuranceEvents(date, insurancePayment, policyId) VALUES('%s', %d, '%s', %d)",
+        String query = String.format("INSERT INTO insuranceEvents(date, insurancePayment, description, policyId) VALUES('%s', %d, '%s', %d)",
                 insuranceEvent.getDate().format(formatter),
                 insuranceEvent.getInsurancePayment(),
                 insuranceEvent.getDescription(),

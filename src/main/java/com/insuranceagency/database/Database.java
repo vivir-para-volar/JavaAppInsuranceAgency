@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Database {
     /**
-     * Адрес БД
+     * URL БД
      */
     final static String DB_URL = "jdbc:mysql://localhost:3306/InsuranceAgency";
     /**
@@ -52,8 +52,8 @@ public class Database {
      * @param password Пароль
      */
     public static void authorization(String login, String password) throws Exception {
-        String query = String.format("SELECT * FROM employees WHERE login = '%s' AND password = '%s'", login, getHash(password));
-        //String query = String.format("SELECT * FROM employees WHERE id = 2");
+        //String query = String.format("SELECT * FROM employees WHERE login = '%s' AND password = '%s'", login, getHash(password));
+        String query = String.format("SELECT * FROM employees WHERE id = 2");
 
         boolean flag = false;
         try (Connection connection = DriverManager.getConnection(Database.DB_URL, Database.LOGIN, Database.PASSWORD)) {

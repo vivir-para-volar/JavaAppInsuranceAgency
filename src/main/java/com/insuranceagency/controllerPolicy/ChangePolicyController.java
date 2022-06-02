@@ -256,7 +256,7 @@ public class ChangePolicyController {
     }
 
     /**
-     * возврат к сцене выбора полиса у страхователя или списку всех полисов
+     * Возврат к сцене выбора полиса у страхователя или списку всех полисов
      */
     public void onCancel(ActionEvent actionEvent) {
         if(fromChange) showDialogCancelFromChange(policy);
@@ -292,6 +292,35 @@ public class ChangePolicyController {
             Parent page = loader.load();
             MainController.getBorderPane.setCenter(page);
         } catch (IOException exp) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Не удалось загрузить страницу");
+            alert.showAndWait();
+        }
+    }
+
+    /**
+     * Вызывает сцену добавления страхового случая при нажатии на кнопку "Добавить страховой случай"
+     */
+    public void onAddInsuranceEvent(ActionEvent actionEvent) {
+        showDialogAddInsuranceEvent(policy);
+    }
+    private void showDialogAddInsuranceEvent(Policy policy) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/policy/addInsuranceEvent.fxml"));
+            Parent page = loader.load();
+            Stage addStage = new Stage();
+            addStage.setTitle("Добавление лица, допущенного к управлению");
+            addStage.initModality(Modality.WINDOW_MODAL);
+            addStage.initOwner(Main.getPrimaryStage());
+            Scene scene = new Scene(page);
+            addStage.setScene(scene);
+            AddInsuranceEventController controller = loader.getController();
+            controller.setAddStage(policy.getId());
+            addStage.showAndWait();
+        } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);

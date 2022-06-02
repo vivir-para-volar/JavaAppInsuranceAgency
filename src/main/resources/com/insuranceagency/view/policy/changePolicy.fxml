@@ -91,7 +91,7 @@
         <HBox alignment="CENTER" prefHeight="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#onChange" text="Изменить" />
-            <Button mnemonicParsing="false" onAction="#onChange" text="Добавить страховой случай ">
+            <Button mnemonicParsing="false" onAction="#onAddInsuranceEvent" text="Добавить страховой случай">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
