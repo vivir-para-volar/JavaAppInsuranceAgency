@@ -11,6 +11,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Класс Контроллер для представления <b>authorization.fxml</b>.
+ * <p>Данный класс предназначен для авторизации пользователя.</p>
+ */
 public class AuthorizationController {
     @FXML
     private TextField tfLogin;

@@ -9,9 +9,16 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
+/**
+ * Класс Контроллер для представления <b>main.fxml</b>.
+ * <p>Данный класс предназначен для отображения нужных страниц при нажатии на элементы меню.</p>
+ */
 public class MainController {
     @FXML
     private BorderPane borderPane;
+    /**
+     * Получение основной панели приложения
+     */
     public static BorderPane getBorderPane;
 
     @FXML

@@ -4,6 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
+/**
+ * Класс Сотрудник со свойствами <b>id</b>, <b>fullName</b>, <b>birthday</b>, <b>telephone</b>, <b>login</b> и <b>login</b>.
+ * <p>Данный класс позволяет описать экземпляр сотрудника с заданным параметрами.</p>
+ */
 public class Employee {
     /**
      * Поле Id

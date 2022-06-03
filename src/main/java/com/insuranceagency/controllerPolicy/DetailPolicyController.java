@@ -16,6 +16,10 @@ import javafx.scene.control.TableView;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>detailPolicy.fxml</b>.
+ * <p>Данный класс предназначен для представления подробной информации о полисе.</p>
+ */
 public class DetailPolicyController {
     @FXML
     private Label lbInsuranceType;
@@ -69,9 +73,13 @@ public class DetailPolicyController {
                 SimpleStringProperty(param.getValue().getDescription()));
     }
 
-    public void setAddStage(int id) {
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param policyId Id полиса
+     */
+    public void setAddStage(int policyId) {
         try {
-            policy = DBPolicy.searchPolicyID(id);
+            policy = DBPolicy.searchPolicyID(policyId);
             fill();
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

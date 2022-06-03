@@ -23,6 +23,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>changePolicy.fxml</b>.
+ * <p>Данный класс предназначен для изменения полиса.</p>
+ */
 public class ChangePolicyController {
     @FXML
     private TextField tfInsuranceType;
@@ -53,6 +57,11 @@ public class ChangePolicyController {
     }
 
     private boolean fromChange;
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param policyId Id полиса для изменения
+     * @param fromChange Из формы изменения
+     */
     public void setAddStage(boolean fromChange, int policyId) {
         this.fromChange = fromChange;
 
@@ -306,6 +315,10 @@ public class ChangePolicyController {
     public void onAddInsuranceEvent(ActionEvent actionEvent) {
         showDialogAddInsuranceEvent(policy);
     }
+    /**
+     * Показа сцены добавления страхового случая
+     * @param policy Полис для добавления страхового случая
+     */
     private void showDialogAddInsuranceEvent(Policy policy) {
         try {
             FXMLLoader loader = new FXMLLoader();

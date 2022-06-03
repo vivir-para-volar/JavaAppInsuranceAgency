@@ -2,6 +2,10 @@ package com.insuranceagency.model;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Класс Автомобиль со свойствами <b>id</b>, <b>model</b>, <b>vin</b>, <b>registrationPlate</b> и <b>vehiclePassport</b>.
+ * <p>Данный класс позволяет описать экземпляр автомобиля с заданным параметрами.</p>
+ */
 public class Car {
     /**
      * Поле Id

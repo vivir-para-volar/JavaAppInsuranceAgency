@@ -9,6 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Класс Контроллер для представления <b>addCar.fxml</b>.
+ * <p>Данный класс предназначен для добавления автомобиля.</p>
+ */
 public class AddCarController {
     @FXML
     private TextField tfModel;
@@ -20,11 +24,19 @@ public class AddCarController {
     private TextField tfVehiclePassport;
 
     private Car carForPolicy;
+    /**
+     * Получение добавленного автомобиля
+     * @return Добавленный автомобиль
+     */
     public Car getCarForPolicy(){
         return carForPolicy;
     }
 
     private Stage dialogStage;
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     */
     public void setAddStage(Stage addStage) {
         this.dialogStage = addStage;
     }

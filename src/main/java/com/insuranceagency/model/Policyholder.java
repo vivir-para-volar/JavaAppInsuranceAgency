@@ -3,6 +3,10 @@ package com.insuranceagency.model;
 import java.time.LocalDate;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Класс Страхователь со свойствами <b>id</b>, <b>fullName</b>, <b>birthday</b> и <b>telephone</b>.
+ * <p>Данный класс позволяет описать экземпляр страхователя с заданным параметрами.</p>
+ */
 public class Policyholder {
     /**
      * Поле Id

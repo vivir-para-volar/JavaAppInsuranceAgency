@@ -17,6 +17,10 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>choosePersonsAllowedToDrive.fxml</b>.
+ * <p>Данный класс предназначен для выбора списка лиц, допущенных к управлению, закрепленных за полисом.</p>
+ */
 public class ChoosePersonsAllowedToDriveController {
     @FXML
     private TextField tfSearch;
@@ -69,6 +73,11 @@ public class ChoosePersonsAllowedToDriveController {
     }
 
     private Stage dialogStage;
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     * @param listPersonAllowedToDriveArray Список лиц, допущенных к управлению, закрепленных за полисом
+     */
     public void setAddStage(Stage addStage, ArrayList<PersonAllowedToDrive> listPersonAllowedToDriveArray) {
         this.dialogStage = addStage;
 

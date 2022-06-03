@@ -9,6 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Класс Контроллер для представления <b>addPersonAllowedToDrive.fxml</b>.
+ * <p>Данный класс предназначен для добавления лица, допущенного к управлению.</p>
+ */
 public class AddPersonAllowedToDriveController {
     @FXML
     private TextField tfFullName;
@@ -16,11 +20,20 @@ public class AddPersonAllowedToDriveController {
     private TextField tfDrivingLicence;
 
     private PersonAllowedToDrive personAllowedToDriveForPolicy;
+
+    /**
+     * Получение добавленного лица, допущенного к управлению
+     * @return Добавленное лицо, допущенное к управлению
+     */
     public PersonAllowedToDrive getPersonAllowedToDriveForPolicy(){
         return personAllowedToDriveForPolicy;
     }
 
     private Stage dialogStage;
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     */
     public void setAddStage(Stage addStage) {
         this.dialogStage = addStage;
     }

@@ -9,6 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Класс Контроллер для представления <b>changePersonAllowedToDrive.fxml</b>.
+ * <p>Данный класс предназначен для изменения лица, допущенного к управлению.</p>
+ */
 public class ChangePersonAllowedToDriveController {
     @FXML
     private TextField tfSearch;
@@ -20,11 +24,16 @@ public class ChangePersonAllowedToDriveController {
     private PersonAllowedToDrive personAllowedToDrive;
 
     private Stage dialogStage;
-    public void setAddStage(Stage addStage, int id) {
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     * @param personAllowedToDriveId Id лица, допущенного к управлению
+     */
+    public void setAddStage(Stage addStage, int personAllowedToDriveId) {
         this.dialogStage = addStage;
 
         try {
-            personAllowedToDrive = DBPersonAllowedToDrive.searchPersonAllowedToDriveID(id);
+            personAllowedToDrive = DBPersonAllowedToDrive.searchPersonAllowedToDriveID(personAllowedToDriveId);
             fillInfo();
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

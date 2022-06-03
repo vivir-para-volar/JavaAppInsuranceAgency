@@ -19,6 +19,10 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>allCars.fxml</b>.
+ * <p>Данный класс предназначен для представления всего списка автомобилей.</p>
+ */
 public class AllCarsController {
     @FXML
     private TextField tfSearch;

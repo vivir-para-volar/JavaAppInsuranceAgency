@@ -21,6 +21,10 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
+/**
+ * Класс Контроллер для представления <b>addInsuranceEvent.fxml</b>.
+ * <p>Данный класс предназначен для добавления страхового случая полису.</p>
+ */
 public class AddInsuranceEventController {
     @FXML
     private DatePicker dpDate;

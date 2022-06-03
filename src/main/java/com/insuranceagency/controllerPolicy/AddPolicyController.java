@@ -26,8 +26,11 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Objects;
 
+/**
+ * Класс Контроллер для представления <b>addPolicy.fxml</b>.
+ * <p>Данный класс предназначен для добавления полиса.</p>
+ */
 public class AddPolicyController {
     @FXML
     private ComboBox<String> cbInsuranceType;
@@ -395,6 +398,7 @@ public class AddPolicyController {
     private void clear(){
         selectedPolicyholder = null;
         selectedCar = null;
+        listPersonAllowedToDrive.clear();
 
         cbInsuranceType.valueProperty().setValue(null);
         tfInsurancePremium.clear();
@@ -403,5 +407,6 @@ public class AddPolicyController {
         cbExpirationDate.valueProperty().setValue(null);
         tfPolicyholder.clear();
         tfCar.clear();
+        tfCountPersonsAllowedToDrive.setText("0");
     }
 }

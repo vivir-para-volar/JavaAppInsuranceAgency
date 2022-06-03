@@ -3,6 +3,10 @@ package com.insuranceagency.model;
 import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 
+/**
+ * Класс Фотография со свойствами <b>id</b>, <b>path</b>, <b>uploadDate</b> и <b>carId</b>.
+ * <p>Данный класс позволяет описать экземпляр фотографии закреплённой с автомобилем с заданным параметрами.</p>
+ */
 public class Photo {
     /**
      * Поле Id

@@ -20,6 +20,10 @@ import javafx.stage.Stage;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>allPolicyholders.fxml</b>.
+ * <p>Данный класс предназначен для представления всего списка страхователей.</p>
+ */
 public class AllPolicyholdersController {
     @FXML
     private TextField tfSearch;

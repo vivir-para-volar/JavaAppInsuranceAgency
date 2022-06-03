@@ -27,6 +27,10 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>allPolicies.fxml</b>.
+ * <p>Данный класс предназначен для представления всего списка полисов.</p>
+ */
 public class AllPoliciesController {
     @FXML
     private TextField tfSearch;

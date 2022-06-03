@@ -7,12 +7,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Класс запуска приложения
+ */
 public class Main extends Application {
     private static Stage primaryStage;
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
 
+    /**
+     * Загрузка первой сцены
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/authorization.fxml"));
@@ -24,6 +30,9 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * Метод для запуска приложения
+     */
     public static void main(String[] args) {
         launch();
     }

@@ -1,9 +1,12 @@
 package com.insuranceagency.model;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDate;
 
+/**
+ * Класс Страховой случай со свойствами <b>id</b>, <b>date</b>, <b>description</b> и <b>policyId</b>.
+ * <p>Данный класс позволяет описать экземпляр страхового случая с заданным параметрами.</p>
+ */
 public class InsuranceEvent {
     /**
      * Поле Id

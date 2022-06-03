@@ -21,6 +21,10 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>allPersonsAllowedToDrive.fxml</b>.
+ * <p>Данный класс предназначен для представления всего списка лиц, допущенных к управлению.</p>
+ */
 public class AllPersonsAllowedToDriveController {
     @FXML
     private TextField tfSearch;

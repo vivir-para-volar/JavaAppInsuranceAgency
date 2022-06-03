@@ -10,6 +10,10 @@ import javafx.stage.Stage;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Класс Контроллер для представления <b>changePolicyholder.fxml</b>.
+ * <p>Данный класс предназначен для изменения страхователя.</p>
+ */
 public class ChangePolicyholderController {
     @FXML
     private TextField tfSearch;
@@ -25,11 +29,16 @@ public class ChangePolicyholderController {
     private Policyholder policyholder;
 
     private Stage dialogStage;
-    public void setAddStage(Stage addStage, int id) {
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     * @param policyholderId Id страхователя
+     */
+    public void setAddStage(Stage addStage, int policyholderId) {
         this.dialogStage = addStage;
 
         try {
-            policyholder = DBPolicyholder.searchPolicyholderID(id);
+            policyholder = DBPolicyholder.searchPolicyholderID(policyholderId);
             fillInfo();
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

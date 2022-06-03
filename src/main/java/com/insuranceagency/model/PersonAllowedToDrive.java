@@ -2,6 +2,10 @@ package com.insuranceagency.model;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Класс Лицо, допущенное к управлению со свойствами <b>id</b>, <b>fullName</b> и <b>drivingLicence</b>.
+ * <p>Данный класс позволяет описать экземпляр лица, допущенного к управлению, с заданным параметрами.</p>
+ */
 public class PersonAllowedToDrive {
     /**
      * Поле Id

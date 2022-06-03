@@ -9,6 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Класс Контроллер для представления <b>changeCar.fxml</b>.
+ * <p>Данный класс предназначен для изменения автомобиля.</p>
+ */
 public class ChangeCarController {
     @FXML
     private TextField tfSearch;
@@ -24,11 +28,16 @@ public class ChangeCarController {
     private Car car;
 
     private Stage dialogStage;
-    public void setAddStage(Stage addStage, int id) {
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     * @param carId Id автомобиля
+     */
+    public void setAddStage(Stage addStage, int carId) {
         this.dialogStage = addStage;
 
         try {
-            car = DBCar.searchCarID(id);
+            car = DBCar.searchCarID(carId);
             fillInfo();
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

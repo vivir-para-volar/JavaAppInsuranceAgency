@@ -27,6 +27,10 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>policy.fxml</b>.
+ * <p>Данный класс предназначен для первого этапа изменения полиса, чтобы выбрать полис для изменения.</p>
+ */
 public class PolicyController {
     @FXML
     private TextField tfSearch;
@@ -101,6 +105,10 @@ public class PolicyController {
                 SimpleStringProperty(param.getValue().getEmployeeName()));
     }
 
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param policyholderId Id страхователя
+     */
     public void setAddStage(int policyholderId) {
         try {
             selectedPolicyholder = DBPolicyholder.searchPolicyholderID(policyholderId);

@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
+/**
+ * Класс Контроллер для представления <b>addPolicyholder.fxml</b>.
+ * <p>Данный класс предназначен для добавления страхователя.</p>
+ */
 public class AddPolicyholderController {
     @FXML
     private TextField tfFullName;
@@ -23,6 +27,10 @@ public class AddPolicyholderController {
     private TextField tfPassport;
 
     private Policyholder policyholderForPolicy;
+    /**
+     * Получение добавленного страхователяя
+     * @return Добавленный страхователь
+     */
     public Policyholder getPolicyholderForPolicy(){
         return policyholderForPolicy;
     }
@@ -33,6 +41,10 @@ public class AddPolicyholderController {
     }
 
     private Stage dialogStage;
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     */
     public void setAddStage(Stage addStage) {
         this.dialogStage = addStage;
     }

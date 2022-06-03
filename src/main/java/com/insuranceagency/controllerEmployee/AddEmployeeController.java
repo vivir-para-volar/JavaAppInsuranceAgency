@@ -12,6 +12,10 @@ import javafx.scene.control.TextField;
 
 import java.time.LocalDate;
 
+/**
+ * Класс Контроллер для представления <b>addEmployee.fxml</b>.
+ * <p>Данный класс предназначен для добавления сотрудника.</p>
+ */
 public class AddEmployeeController {
     @FXML
     private TextField tfFullName;

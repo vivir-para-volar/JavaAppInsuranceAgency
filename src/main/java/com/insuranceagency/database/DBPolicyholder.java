@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Класс для взаимодействия с БД с таблицей Страхователи
+ */
 public class DBPolicyholder {
 
     /**

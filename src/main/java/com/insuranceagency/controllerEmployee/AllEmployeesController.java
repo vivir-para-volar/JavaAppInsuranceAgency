@@ -23,6 +23,10 @@ import javafx.stage.Stage;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Класс Контроллер для представления <b>allEmployees.fxml</b>.
+ * <p>Данный класс предназначен для представления всего списка сотрудников.</p>
+ */
 public class AllEmployeesController {
     @FXML
     private TextField tfSearch;

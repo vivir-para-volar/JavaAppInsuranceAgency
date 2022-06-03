@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Класс для взаимодействия с БД с таблицей Лица, допущенные к управлению
+ */
 public class DBPersonAllowedToDrive {
 
     /**

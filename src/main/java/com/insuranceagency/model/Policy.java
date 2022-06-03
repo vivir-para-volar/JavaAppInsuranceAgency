@@ -6,6 +6,11 @@ import com.insuranceagency.database.DBPolicyholder;
 import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 
+/**
+ * Класс Полис со свойствами <b>id</b>, <b>insuranceType</b>, <b>insurancePremium</b>, <b>insuranceAmount</b>,
+ * <b>dateOfConclusion</b>, <b>expirationDate</b>, <b>policyholderId</b>, <b>carId</b> и <b>employeeId</b>.
+ * <p>Данный класс позволяет описать экземпляр полиса с заданным параметрами.</p>
+ */
 public class Policy {
     /**
      * Поле Id

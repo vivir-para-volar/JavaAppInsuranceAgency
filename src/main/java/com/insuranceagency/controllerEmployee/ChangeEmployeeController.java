@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Класс Контроллер для представления <b>changeEmployee.fxml</b>.
+ * <p>Данный класс предназначен для изменения сотрудника.</p>
+ */
 public class ChangeEmployeeController {
     @FXML
     private TextField tfSearch;
@@ -31,11 +35,16 @@ public class ChangeEmployeeController {
     private Employee employee;
 
     private Stage dialogStage;
-    public void setAddStage(Stage addStage, int id) {
+    /**
+     * Метод для передачи данных при загрузке сцены
+     * @param addStage Текущая сцена
+     * @param employeeId Id сотрудника
+     */
+    public void setAddStage(Stage addStage, int employeeId) {
         this.dialogStage = addStage;
 
         try {
-            employee = DBEmployee.searchEmployeeID(id);
+            employee = DBEmployee.searchEmployeeID(employeeId);
             fillInfo();
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

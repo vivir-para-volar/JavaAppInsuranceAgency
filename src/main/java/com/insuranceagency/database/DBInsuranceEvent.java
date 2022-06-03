@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Класс для взаимодействия с БД с таблицей Страховые случаи
+ */
 public class DBInsuranceEvent {
 
     /**
