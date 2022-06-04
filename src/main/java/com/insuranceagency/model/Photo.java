@@ -57,6 +57,16 @@ public class Photo {
     }
 
     /**
+     * Инициализирует новый экземпляр класса Photo с заданными параметрами
+     * @param path Путь
+     * @param uploadDate Дата загрузки
+     */
+    public Photo(@NotNull String path, @NotNull LocalDate uploadDate) {
+        this.path = path;
+        this.uploadDate = uploadDate;
+    }
+
+    /**
      * Функция получения значение поля {@link Photo#id}
      * @return Id
      */

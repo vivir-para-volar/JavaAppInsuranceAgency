@@ -1,13 +1,24 @@
 package com.insuranceagency.controllerCar;
 
 import com.insuranceagency.database.DBCar;
+import com.insuranceagency.database.DBPhoto;
 import com.insuranceagency.model.Car;
 
+import com.insuranceagency.model.Photo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  * Класс Контроллер для представления <b>addCar.fxml</b>.
@@ -22,6 +33,27 @@ public class AddCarController {
     private TextField tfRegistrationPlate;
     @FXML
     private TextField tfVehiclePassport;
+
+    @FXML
+    private ImageView ivPhoto;
+    @FXML
+    private Label lbUploadDate;
+    @FXML
+    private Button btnLast;
+    @FXML
+    private Button btnNext;
+
+
+    private ArrayList<Image> listImages;
+    private ArrayList<File> listFiles;
+    private int currentIndex;
+
+    @FXML
+    void initialize() {
+        listImages = new ArrayList<>();
+        listFiles = new ArrayList<>();
+        currentIndex = 0;
+    }
 
     private Car carForPolicy;
     /**
@@ -94,6 +126,8 @@ public class AddCarController {
     public void onAdd(ActionEvent actionEvent) {
         try
         {
+            if(listImages.size() == 0) throw new Exception("Добавьте фотографию автомобиля");
+
             Car car = readDate();
             DBCar.addCar(car);
 
@@ -103,11 +137,26 @@ public class AddCarController {
             alert.setContentText("Автомобиль успешно добавлен");
             alert.showAndWait();
 
-            if(dialogStage != null ){
-                carForPolicy = DBCar.searchCarVin(car.getVin());
-                dialogStage.close();
+            Car newCar = DBCar.searchCarVin(car.getVin());
+            InteractionPhoto.createDirectory(newCar.getId());
+
+            ArrayList<Photo> listPhotos = new ArrayList<>();
+            for (var i = 0; i < listImages.size(); i++) {
+                File file = listFiles.get(i);
+
+                Photo photo = new Photo(file.getName(), LocalDate.now(), newCar.getId());
+                listPhotos.add(photo);
+
+                InteractionPhoto.loadPhotoInDirectory(newCar.getId(), file);
             }
-            else clear();
+            DBPhoto.addPhotos(listPhotos);
+
+            if(dialogStage != null ){
+                carForPolicy = newCar;
+                dialogStage.close();
+            } else {
+                clear();
+            }
         } catch (Exception exp) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -125,5 +174,55 @@ public class AddCarController {
         tfVin.clear();
         tfRegistrationPlate.clear();
         tfVehiclePassport.clear();
+
+        listImages.clear();
+        listFiles.clear();
+        currentIndex = 0;
+        ivPhoto.setImage(null);
+        lbUploadDate.setText("");
+        btnLast.setVisible(false);
+        btnNext.setVisible(false);
+    }
+
+    /**
+     * Добавление фотографии при нажатии на кнопку "Загрузить"
+     */
+    public void onAddPhoto(ActionEvent actionEvent) {
+        File file = InteractionPhoto.loadPhoto();
+
+        if(file != null) {
+            Image image = new Image(file.toURI().toString());
+            listFiles.add(file);
+
+            listImages.add(image);
+            ivPhoto.setImage(image);
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            lbUploadDate.setText(LocalDate.now().format(dtf));
+
+            if (listImages.size() == 2) {
+                btnLast.setVisible(true);
+                btnNext.setVisible(true);
+            }
+        }
+    }
+
+    /**
+     * Листает слайдер с изображениями назад
+     */
+    public void onLast(ActionEvent actionEvent) {
+        if(currentIndex == 0) currentIndex = listImages.size() - 1;
+        else currentIndex--;
+
+        ivPhoto.setImage(listImages.get(currentIndex));
+    }
+    /**
+     * Листает слайдер с изображениями вперёд
+     */
+    public void onNext(ActionEvent actionEvent) {
+        if(currentIndex == listImages.size() - 1) currentIndex = 0;
+        else currentIndex++;
+
+        ivPhoto.setImage(listImages.get(currentIndex));
     }
 }
