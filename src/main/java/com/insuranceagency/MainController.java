@@ -24,6 +24,7 @@ public class MainController {
     @FXML
     void initialize() {
         getBorderPane = borderPane;
+        loader("view/policy/addPolicy.fxml");
     }
 
     private Parent page;
