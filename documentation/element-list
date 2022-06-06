@@ -1,0 +1,10 @@
+module:com.insuranceagency
+com.insuranceagency
+com.insuranceagency.controllerCar
+com.insuranceagency.controllerEmployee
+com.insuranceagency.controllerPersonAllowedToDrive
+com.insuranceagency.controllerPolicy
+com.insuranceagency.controllerPolicyholder
+com.insuranceagency.controllerReport
+com.insuranceagency.database
+com.insuranceagency.model
