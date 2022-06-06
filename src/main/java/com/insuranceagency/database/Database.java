@@ -28,7 +28,7 @@ public class Database {
     /**
      * Пароль для входа в БД
      * */
-    final static String PASSWORD = "root";
+    final static String PASSWORD = "root_root";
 
     /**
      * Текущий пользователь

@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
  * Класс для взаимодействия с фотографиями
  */
 public class InteractionPhoto {
-    final static String pathDirectoryForAllPhotos = "src/main/resources/com/insuranceagency/photos/";
+    final static String pathDirectoryForAllPhotos = String.valueOf(Paths.get("./photos"));
 
     /**
      * Создание папки для хранения фотографий определенного атомобиля
